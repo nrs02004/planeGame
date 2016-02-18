@@ -16,12 +16,13 @@
 #include <string>
 #include "image.h"
 
-enum action_types{THRUST, FIRE};
+enum action_types{THRUST, FIRE, CLICK};
 
 class Action
 {
 public:
     Action();
+    virtual void apply();
     virtual void apply(Ship *myShip, float dt);
     virtual void apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets, Image* bullet_image);
     
@@ -49,5 +50,12 @@ class fire_weapon : public Action
 public:
     fire_weapon();
     void apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets, Image* bullet_image);
+};
+
+class mouse_click : public Action{
+public:
+    mouse_click(int, int);
+    void apply();
+    float x,y;
 };
 #endif /* defined(__airplaneGame__action__) */

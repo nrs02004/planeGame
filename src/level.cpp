@@ -17,7 +17,7 @@
 
 bool cmp( const EnemyShip *s1, const EnemyShip *s2 ){return (s1)->y < (s2)->y;}
 
-Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _images)
+Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _images, Ship* _myShip)
 {
   currComplete = 0;
   speed = 100;
@@ -25,12 +25,10 @@ Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _
   
   load_file(L, filename);
 
-  /* std::vector<Bullet*> bullets;
-  std::vector<Bullet*> enemy_bullets;
-  std::vector<Action*> actions;
-  std::vector<EnemyShip*> enemies;*/
 
   
+
+  myShip = _myShip;
 
 
   
@@ -56,17 +54,13 @@ Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _
 }
 
 //should probably change SCREEN_HEIGHT here
-void Level::update(float dt, std::vector<EnemyShip*> &enemies)
+void Level::update(float dt, std::vector<Action*> &actions)
 {
+  //Updating where in the level we are
   currComplete += speed * dt;
   
-  //Should update this to pop from the back
-
+  //Update enemies currently on screen
   load_new_enemies(enemies);
-
-  /*
-
-  // REST OF THE UPDATE
 
   //Updating our ship
   update_ship(myShip, dt);
@@ -75,7 +69,7 @@ void Level::update(float dt, std::vector<EnemyShip*> &enemies)
   update_enemies(enemies, dt);
   
   //"apply enemy actions"
-  enemy_actions(enemies, enemy_bullets, images["bullet_image"]);
+  enemy_actions(enemies, enemy_bullets);
   
   //Updating the bullets
   update_bullets(bullets, dt);
@@ -84,12 +78,12 @@ void Level::update(float dt, std::vector<EnemyShip*> &enemies)
   //Checking for bullet --- ship collisions
   check_collisions(bullets, enemies);
   
-  apply_actions(actions, myShip, bullets, images["bullet_image"], dt);
-  
-  if(update_disp(images["screen"]->image, images["background"]->image, myShip, bullets, enemies, enemy_bullets) == -1)
-    {
-      return 1;
-    }*/
+  apply_actions(actions, myShip, bullets, dt);
+}
+
+void Level::display()
+{
+update_disp(images["screen"]->image, images["background"]->image, myShip, bullets, enemies, enemy_bullets);
 }
 
 void Level::load_new_enemies(std::vector<EnemyShip*> &enemies)
@@ -128,14 +122,14 @@ void Level::update_bullets(std::vector<Bullet*> &bullets, float dt)
     }
 }
 
-void Level::enemy_actions(std::vector<EnemyShip*> &enemies, std::vector<Bullet*> &enemy_bullets, Image* bullet_image)
+void Level::enemy_actions(std::vector<EnemyShip*> &enemies, std::vector<Bullet*> &enemy_bullets)
 {
   if(!enemies.empty())
     {
       for(std::vector<EnemyShip*>::iterator it = enemies.begin(); it != enemies.end();it++){
 	if((*it)->firing == true)
 	  {
-	    (*it)->fire(enemy_bullets, bullet_image);
+	    (*it)->fire(enemy_bullets, images["bullet_image"]);
 	  }
       }
     }
@@ -189,7 +183,7 @@ void Level::check_collisions(std::vector<Bullet*> &bullets, std::vector<EnemyShi
 }
 
 
-void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vector<Bullet*> &bullets, Image* bullet_image, float dt)
+void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vector<Bullet*> &bullets, float dt)
 {
     myShip->active_thrust_x = false;
     myShip->active_thrust_y = false;
@@ -201,8 +195,10 @@ void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vecto
                     (*it)->apply(myShip, dt);
                     break;
                 case FIRE:
-                    (*it)->apply(myShip, dt, bullets, bullet_image); 
+                    (*it)->apply(myShip, dt, bullets, images["bullet_image"]); 
                     break;
+                case CLICK:
+                    (*it)->apply();
             }
         }
     }
@@ -221,4 +217,5 @@ bool Level::check_collide(Bullet *bullet, EnemyShip *ship)
 
 Level::~Level()
 {
+   delete myShip;  bullets.clear(); enemies.clear(); enemy_bullets.clear();
 }

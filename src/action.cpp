@@ -27,6 +27,13 @@ fire_weapon::fire_weapon()
     action_type = FIRE;
 }
 
+mouse_click::mouse_click(int _x, int _y)
+{
+    x = _x;
+    y = _y;
+    action_type = CLICK;
+}
+
 void x_thruster::apply(Ship *myShip, float dt)
 {
     myShip->x_thrust(dt * direction * myShip->accel);
@@ -42,7 +49,15 @@ void fire_weapon::apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets, I
     myShip->fire(bullets, bullet_image);
 }
 
+// THIS NEEDS TO BE UPDATED WHEN WE HAVE BUTTONS!
+
+void mouse_click::apply()
+{
+    std::cout << x << " " << y << " \n";
+}
+
 // Initial definitions for our virtual functions
 
+void Action::apply(){}
 void Action::apply(Ship *myShip, float dt){}
 void Action::apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets, Image* bullet_image){}

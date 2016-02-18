@@ -19,6 +19,14 @@ void handle_event(SDL_Event &event, bool &quit, std::vector<Action*> &actions)
             //Quit the program
             quit = true;
         }
+        
+        if( event.type == SDL_MOUSEBUTTONDOWN )
+        {
+            int x,y;
+            SDL_GetMouseState( &x, &y );
+            mouse_click *myAction = new mouse_click(x,y);
+            actions.push_back(myAction);
+        }
     }
     
     // //Get the keystates
