@@ -27,6 +27,8 @@
 #include "lua_binding.h"
 #include "lua/lua.hpp"
 #include "level.h"
+#include <stack>
+#include "layer.h"
 
 SDL_Window* gWindow = NULL;
 
@@ -48,26 +50,26 @@ int main( int argc, char* args[] )
   images["bullet_image"] = new Image(NULL, 20, 40);
   images["enemy_image"] = new Image(NULL, 71, 77);
 
-    SDL_Event event;
-    
-    Uint32 old_time, current_time;
-    float dt;
-    current_time = SDL_GetTicks();
-
-    //Quit flag
-    bool quit = false;
-    
-    //Initialize
-    if( init(images["screen"]->image) == false )
+  SDL_Event event;
+  
+  Uint32 old_time, current_time;
+  float dt;
+  current_time = SDL_GetTicks();
+  
+  //Quit flag
+  bool quit = false;
+  
+  //Initialize
+  if( init(images["screen"]->image) == false )
     {
-        return 1;
+      return 1;
     }
-   
+  
     
-    //Load the files
-    if( load_files(images) == false )
+  //Load the files
+  if( load_files(images) == false )
     {
-        return 1;
+      return 1;
     }
     
     std::vector<Image*> ship_images;
@@ -78,59 +80,39 @@ int main( int argc, char* args[] )
     ship_images.push_back(images["ship_imageRR"]);
 
     Ship *myShip = new Ship(240, 190, &ship_images);
-    std::vector<Bullet*> bullets;
-    std::vector<Bullet*> enemy_bullets;
-    std::vector<Action*> actions;
-    std::vector<EnemyShip*> enemies;
 
-    //    createEnemies(enemies, images["enemy_image"], L);
+    std::vector<Action*> actions;
 
     std::string filename="level/level1.lua";
-    Level* Level1 = new Level(filename, L, images);
-
+    Level* Level1 = new Level(filename, L, images, myShip);
+    
+    Layer* current_layer;
+    
+    std::stack<Layer*> layers; // Creating the layer stack
+    layers.push(Level1); // Adding the level layer!
+    
     srand(time(0));
 
     current_time = SDL_GetTicks();
     //While the user hasn't quit
       while( quit == false )
 	{
-	  //Finding how much time has passed
+    //Finding how much time has passed
 	  dt = update_time(old_time, current_time);
-	  
-	  Level1->update(dt, enemies);
-	  
-	  //Updating our ship
-	  Level1->update_ship(myShip, dt);
-        
-	  //Updating enemy ships
-	  Level1->update_enemies(enemies, dt);
-	  
-	  //"apply enemy actions"
-	  Level1->enemy_actions(enemies, enemy_bullets, images["bullet_image"]);
-	  
-	  //Updating the bullets
-	  Level1->update_bullets(bullets, dt);
-	  Level1->update_bullets(enemy_bullets, dt);
-	  
-	  //Checking for bullet --- ship collisions
-	  Level1->check_collisions(bullets, enemies);
-	  
+
 	  //Checking for key presses
 	  handle_event(event, quit, actions);
 	  
-	  Level1->apply_actions(actions, myShip, bullets, images["bullet_image"], dt);
-	  
-	  if(update_disp(images["screen"]->image, images["background"]->image, myShip, bullets, enemies, enemy_bullets) == -1)
-	    {
-	    return 1;
-	    }
-	  
+        (layers.top())->update(dt,actions,layers);
+        (layers.top())->display();
+        
+        //Removing Layers that have ended
+        while(layers.top()->terminate == true){
+            layers.pop();
+        }
+
 	}
-      
-    
-    //Free the surfaces and quit SDL
-    delete myShip;  bullets.clear(); enemies.clear(); enemy_bullets.clear();
-    
+          
     clean_up(images);
     
     return 0;

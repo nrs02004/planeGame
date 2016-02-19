@@ -17,7 +17,7 @@
 
 bool cmp( const EnemyShip *s1, const EnemyShip *s2 ){return (s1)->y < (s2)->y;}
 
-Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _images, Ship* _myShip)
+Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _images, Ship* _myShip) : Layer()
 {
   currComplete = 0;
   speed = 100;
@@ -54,7 +54,7 @@ Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _
 }
 
 //should probably change SCREEN_HEIGHT here
-void Level::update(float dt, std::vector<Action*> &actions)
+void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &layers)
 {
   //Updating where in the level we are
   currComplete += speed * dt;
@@ -78,7 +78,7 @@ void Level::update(float dt, std::vector<Action*> &actions)
   //Checking for bullet --- ship collisions
   check_collisions(bullets, enemies);
   
-  apply_actions(actions, myShip, bullets, dt);
+  apply_actions(actions, myShip, bullets, dt, layers);
 }
 
 void Level::display()
@@ -183,7 +183,7 @@ void Level::check_collisions(std::vector<Bullet*> &bullets, std::vector<EnemyShi
 }
 
 
-void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vector<Bullet*> &bullets, float dt)
+void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vector<Bullet*> &bullets, float dt, std::stack<Layer*> &layers)
 {
     myShip->active_thrust_x = false;
     myShip->active_thrust_y = false;
@@ -199,6 +199,7 @@ void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vecto
                     break;
                 case CLICK:
                     (*it)->apply();
+                    layers.push(new pause());
             }
         }
     }
