@@ -25,7 +25,6 @@
 void apply_surface( int, int, SDL_Surface*, SDL_Surface* );
 SDL_Surface *load_image( std::string, SDL_Surface* );
 bool init(SDL_Surface*&);
-bool load_files(std::map<std::string, Image*>&);
 bool update_disp(SDL_Surface*, SDL_Surface*, Ship*, std::vector<Bullet*>&, std::vector<EnemyShip*>&, std::vector<Bullet*>&);
 void apply_PhysicalObject(SDL_Surface*, PhysicalObject*, int);
 void apply_Ship(SDL_Surface*, Ship*);

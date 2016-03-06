@@ -44,9 +44,10 @@ void y_thruster::apply(Ship *myShip, float dt)
     myShip->y_thrust(dt * direction * myShip->accel);
 }
 
-void fire_weapon::apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets, Image* bullet_image)
+void fire_weapon::apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets)
 {
-    myShip->fire(bullets, bullet_image);
+    myShip->fire(bullets);
+    std::cout << "FIRING 0 \n";
 }
 
 // THIS NEEDS TO BE UPDATED WHEN WE HAVE BUTTONS!
@@ -60,4 +61,4 @@ void mouse_click::apply()
 
 void Action::apply(){}
 void Action::apply(Ship *myShip, float dt){}
-void Action::apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets, Image* bullet_image){}
+void Action::apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets){}

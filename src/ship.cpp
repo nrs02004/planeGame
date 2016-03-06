@@ -20,10 +20,14 @@ Ship::Ship(float init_x, float init_y, std::vector<Image*> *ship_images)
   max_vel = 400;
   active_thrust_x = false;
   active_thrust_y = false;
-  cool_down_length = 0.3;
-  cool_down_timer = 0.0;
   banking = 0;
-  firePort = 1;
+  life = 100;
+  exploded = 0;
+}
+
+void Ship::add_weapon(Weapon* weapon)
+{
+  weapons.push_back(weapon);
 }
 
 void Ship::update(float dt)
@@ -41,8 +45,12 @@ void Ship::update(float dt)
     
     active_thrust_x = false;
     active_thrust_y = false;
+
+  for(auto weapon_it = weapons.begin(); weapon_it != weapons.end(); weapon_it++){
+    (*weapon_it)->update(dt);
+  }
     
-    cool_down_timer = fmax(cool_down_timer - dt, 0.0);
+    if(life <= 0.0){exploded = true;}
     
 }
 
@@ -84,16 +92,18 @@ void Ship::passive_break_y(float power)
     y_vel = copysignf(1.0, y_vel) * fmax(fabs(y_vel) - power, 0); //decreases x_velocity by power, but doesn't cross 0
 }
 
-void Ship::fire(std::vector<Bullet*>& bullets, Image* bullet_image)
+void Ship::fire(std::vector<Bullet*>& bullets)
 {
-    if(cool_down_timer <= 0.0f){
-      Bullet *myBullet = new Bullet(x + firePort*PORTWIDTH, y, BULLETSPEEDX, BULLETSPEEDY/2, BULLETACCELY, bullet_image);
-      firePort *= -1;
-        bullets.push_back(myBullet);
-        cool_down_timer = cool_down_length;
-    }
+
+  for(auto weapon_it = weapons.begin(); weapon_it != weapons.end(); weapon_it++){
+    (*weapon_it)->fire(bullets, x, y);
+  }
 }
 
+void Ship::takeDmg(Bullet *bulletIt)
+{
+    life = life - bulletIt->damage;
+}
 
 void Ship::enforce_bounds(float max_y, float max_x)
 {

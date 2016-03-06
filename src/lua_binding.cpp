@@ -119,3 +119,69 @@ std::vector<Ship_dat*> lua_get_ships(lua_State *L, const std::string& key){
     lua_pop(L, 2);
     return outp;
 }
+
+
+//Gets weapon types
+std::vector<Weapon_dat*> lua_get_weapons(lua_State *L, const std::string& key){
+    lua_getglobal(L, key.c_str());
+    std::vector<Weapon_dat*> outp;
+    if(!lua_istable(L, -1)) {
+        luaL_error(L, "Not a table: %s", key.c_str());
+    }
+    lua_pushnil(L);
+    
+    int alternate;
+    float portWidth, cool_down_length, bullet_accel_x, bullet_accel_y, bullet_init_speed_x, bullet_init_speed_y, bullet_dmg;
+    std::string bullet_name, gun_name; 
+
+    
+    while(lua_next(L, -2)) {
+      alternate = lua_get_int_from_table(L,"alternate");
+      portWidth = lua_get_float_from_table(L,"portWidth");
+      cool_down_length = lua_get_float_from_table(L, "cool_down_length");
+      bullet_accel_x = lua_get_float_from_table(L, "bullet_accel_x");
+      bullet_accel_y = lua_get_float_from_table(L, "bullet_accel_y");
+      bullet_init_speed_x = lua_get_float_from_table(L, "bullet_init_speed_x");
+      bullet_init_speed_y = lua_get_float_from_table(L, "bullet_init_speed_y");
+      bullet_dmg = lua_get_float_from_table(L, "bullet_dmg");
+      bullet_name = lua_get_string_from_table(L, "bullet_name");
+      gun_name = lua_get_string_from_table(L, "gun_name");
+
+      Weapon_dat* weapon_dat = new Weapon_dat(alternate, portWidth, cool_down_length, bullet_accel_x, bullet_accel_y,
+					      bullet_init_speed_x, bullet_init_speed_y, bullet_dmg, bullet_name, gun_name);
+      
+      outp.push_back(weapon_dat);
+      lua_pop(L, 1);
+      }
+    lua_pop(L, 2);
+    return outp;
+}
+
+
+
+//Gets images
+std::vector<Image_dat*> lua_get_images(lua_State *L, const std::string& key){
+    lua_getglobal(L, key.c_str());
+    std::vector<Image_dat*> outp;
+    if(!lua_istable(L, -1)) {
+        luaL_error(L, "Not a table: %s", key.c_str());
+    }
+    lua_pushnil(L);
+    
+    std::string name, path;
+    float width, height;
+    
+    while(lua_next(L, -2)) {
+      name = lua_get_string_from_table(L, "name");
+      path = lua_get_string_from_table(L, "path");
+      width = lua_get_float_from_table(L, "width");
+      height = lua_get_float_from_table(L, "height");
+
+      Image_dat* image_dat = new Image_dat(name, path, width, height);
+      
+      outp.push_back(image_dat);
+      lua_pop(L, 1);
+      }
+      lua_pop(L, 1);
+    return outp;
+}

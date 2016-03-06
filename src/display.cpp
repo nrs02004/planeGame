@@ -87,50 +87,6 @@ bool init(SDL_Surface* &screen)
     return true;
 }
 
-bool load_files(std::map<std::string, Image*> &images)
-{
-
-    //Load the background image
-  images["background"]->image = load_image( "image/background.png", images["screen"]->image );
-    
-    //If the background didn't load
-    if( images["background"]->image == NULL )
-    {
-        return false;
-    }
-
-    //Load the stick figure
-    images["ship_image"]->image = load_image( "image/ship/ship.png", images["screen"]->image );
-    images["ship_imageL"]->image = load_image( "image/ship/shipL.png", images["screen"]->image );
-    images["ship_imageR"]->image = load_image( "image/ship/shipR.png", images["screen"]->image );
-    images["ship_imageLL"]->image = load_image( "image/ship/shipLL.png", images["screen"]->image );
-    images["ship_imageRR"]->image = load_image( "image/ship/shipRR.png", images["screen"]->image );
-    
-    //If the stick figure didn't load
-    if( images["ship_image"]->image == NULL )
-    {
-        return false;
-    }
-
-    images["bullet_image"]->image = load_image( "image/bullet.png", images["screen"]->image );
-    
-    //If the stick figure didn't load
-    if( images["bullet_image"]->image == NULL )
-    {
-        return false;
-    }
-
-    images["enemy_image"]->image = load_image( "image/enemy.png", images["screen"]->image );
-    
-    //If the stick figure didn't load
-    if( images["enemy_image"]->image == NULL )
-    {
-        return false;
-    }
-    
-     return true;
-}
-
 void apply_PhysicalObject(SDL_Surface *screen, PhysicalObject *obj, int index = 0)
 {
   apply_surface(obj->x - (*(obj->my_images))[index]->width/2, obj->y - (*(obj->my_images))[index]->height/2, (*(obj->my_images))[index]->image, screen);

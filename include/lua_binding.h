@@ -24,4 +24,8 @@ int lua_get_int_from_table(lua_State *, const std::string&);
 float lua_get_float_from_table(lua_State *, const std::string&);
 
 std::vector<Ship_dat*> lua_get_ships(lua_State *, const std::string&);
+
+std::vector<Weapon_dat*> lua_get_weapons(lua_State *, const std::string&);
+
+std::vector<Image_dat*> lua_get_images(lua_State *, const std::string&);
 #endif

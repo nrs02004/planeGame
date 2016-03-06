@@ -11,8 +11,8 @@ LIBLUA=$(PROJECTROOT)/lib/liblua.a
 
 all: gameApp
 
-gameApp: main.o action.o display.o event.o image.o ship.o bullet.o enemyShip.o physicalObject.o lua_binding.o level.o layer.o
-	$(CC) -o gameApp $(LIBLUA) main.o display.o event.o ship.o action.o bullet.o enemyShip.o physicalObject.o image.o lua_binding.o level.o layer.o $(FLAGS)
+gameApp: main.o action.o display.o event.o image.o ship.o bullet.o enemyShip.o physicalObject.o lua_binding.o level.o layer.o weapon.o
+	$(CC) -o gameApp $(LIBLUA) main.o display.o event.o ship.o action.o bullet.o enemyShip.o physicalObject.o image.o lua_binding.o level.o layer.o weapon.o $(FLAGS)
 
 main.o: $(SRC)main.cpp
 	$(CC) -c $(SRC)main.cpp  $(INC)
@@ -47,8 +47,11 @@ lua_binding.o: $(SRC)lua_binding.cpp
 level.o: $(SRC)level.cpp
 	$(CC) -c $(SRC)level.cpp $(INC)
 
-layer.o : $(SRC)layer.cpp
+layer.o: $(SRC)layer.cpp
 	$(CC) -c $(SRC)layer.cpp $(INC)
+
+weapon.o: $(SRC)weapon.cpp
+	$(CC) -c $(SRC)weapon.cpp $(INC)
 
 clean:
 	rm -rf gameApp *.o *~  src/*~ include/*~ level/*~ enemies/*~

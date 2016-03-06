@@ -24,7 +24,7 @@ public:
     Action();
     virtual void apply();
     virtual void apply(Ship *myShip, float dt);
-    virtual void apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets, Image* bullet_image);
+    virtual void apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets);
     
     action_types action_type;
 };
@@ -49,7 +49,7 @@ class fire_weapon : public Action
 {
 public:
     fire_weapon();
-    void apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets, Image* bullet_image);
+    void apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets);
 };
 
 class mouse_click : public Action{

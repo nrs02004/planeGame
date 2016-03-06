@@ -29,6 +29,7 @@
 #include "level.h"
 #include <stack>
 #include "layer.h"
+#include "weapon.h"
 
 SDL_Window* gWindow = NULL;
 
@@ -37,18 +38,29 @@ int main( int argc, char* args[] )
 
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
-  
-  std::map<std::string, Image*> images;
 
-  images["background"] = new Image(NULL, 0, 0);
-  images["ship_image"] = new Image(NULL, 94, 100);
-  images["ship_imageR"] = new Image(NULL, 94, 100);
-  images["ship_imageL"] = new Image(NULL, 94, 100);
-  images["ship_imageRR"] = new Image(NULL, 94, 100);
-  images["ship_imageLL"] = new Image(NULL, 94, 100);
+  std::map<std::string, Image*> images;
+  
   images["screen"] = new Image(NULL, 0, 0);
-  images["bullet_image"] = new Image(NULL, 20, 40);
-  images["enemy_image"] = new Image(NULL, 71, 77);
+
+  //initialize
+  if( init(images["screen"]->image) == false )
+    {
+      return 1;
+    }
+
+  //Reading in images from Lua
+  std::string init_filename = "init/init.lua";
+  load_file(L, init_filename);
+  std::string image_data = "images";
+  std::vector<Image_dat*> image_dat = lua_get_images(L, image_data);
+
+  //Loading all the images
+  for(auto imageIt = image_dat.begin(); imageIt != image_dat.end(); imageIt++){
+    images[(*imageIt)->name] = new Image(NULL, (*imageIt)->width, (*imageIt)->height);
+    (images[(*imageIt)->name])->image = load_image((*imageIt)->path, images["screen"]->image);
+  }
+  
 
   SDL_Event event;
   
@@ -59,18 +71,6 @@ int main( int argc, char* args[] )
   //Quit flag
   bool quit = false;
   
-  //Initialize
-  if( init(images["screen"]->image) == false )
-    {
-      return 1;
-    }
-  
-    
-  //Load the files
-  if( load_files(images) == false )
-    {
-      return 1;
-    }
     
     std::vector<Image*> ship_images;
     ship_images.push_back(images["ship_image"]);
@@ -81,15 +81,36 @@ int main( int argc, char* args[] )
 
     Ship *myShip = new Ship(240, 190, &ship_images);
 
+    // loading weapons
+    std::string weapon_filename = "objects/weapon_list.lua";
+    load_file(L, weapon_filename);
+    std::string weapon_data = "weapon_list";
+    std::vector<Weapon_dat*> weapon_dat = lua_get_weapons(L, weapon_data);
+
+    std::map<std::string, Weapon*> weapon_list;
+    
+    for(auto wIt = weapon_dat.begin(); wIt != weapon_dat.end(); wIt++){
+      Weapon *newWeapon = new Weapon((*wIt)->alternate, (*wIt)->portWidth,
+				     (*wIt)->cool_down_length, (*wIt)->bullet_accel_x,
+				     (*wIt)->bullet_accel_y, (*wIt)->bullet_init_speed_x,
+				     (*wIt)->bullet_init_speed_y, (*wIt)->bullet_dmg,
+				     images[(*wIt)->bullet_name]);
+     
+      weapon_list[(*wIt)->gun_name] = newWeapon;
+      std::cout << (*wIt)->gun_name << " ** \n";
+
+      }		     
+
+    myShip->add_weapon(weapon_list["green_machine_gun"]);
+    myShip->add_weapon(weapon_list["green_missile_launcher"]);
+    
     std::vector<Action*> actions;
 
-    std::string filename="level/level1.lua";
-    Level* Level1 = new Level(filename, L, images, myShip);
-    
-    Layer* current_layer;
-    
     std::stack<Layer*> layers; // Creating the layer stack
-    layers.push(Level1); // Adding the level layer!
+    
+    Intro* intro = new Intro(L, images, myShip);
+    
+    layers.push(intro); //Adding the intro layer
     
     srand(time(0));
 
@@ -114,6 +135,7 @@ int main( int argc, char* args[] )
 	}
           
     clean_up(images);
+    delete myShip;
     
     return 0;
 }

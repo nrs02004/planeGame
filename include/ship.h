@@ -15,24 +15,29 @@
 #include <string>
 #include "image.h"
 #include "physicalObject.h"
+#include "weapon.h"
 
 class Ship : public PhysicalObject{
 public:
-  Ship(float, float, std::vector<Image*> *) ;
+  Ship(float, float, std::vector<Image*> *);
   ~Ship();
+
+  void add_weapon(Weapon*);
     
     void update(float dt);
     void x_thrust(float power);
     void y_thrust(float power);
     void passive_break_x(float power);
     void passive_break_y(float power);
-    void fire(std::vector<Bullet*>& bullets, Image* bullet_image);
+    void fire(std::vector<Bullet*>& bullets);
     void enforce_bounds(float, float);
+    void takeDmg(Bullet*);
     
-    float x_vel,y_vel,max_vel,accel,cool_down_timer, cool_down_length;
-    bool active_thrust_x, active_thrust_y;
+    float x_vel,y_vel,max_vel,accel, life;
+    bool active_thrust_x, active_thrust_y, exploded;
     int banking;
-    int firePort;
+
+    std::vector<Weapon*> weapons;
 };
 
 #endif /* defined(__airplaneGame__ship__) */

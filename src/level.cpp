@@ -29,6 +29,7 @@ Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _
   
 
   myShip = _myShip;
+    myShip->x = 500; myShip->y = 680;
 
 
   
@@ -75,10 +76,15 @@ void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
   update_bullets(bullets, dt);
   update_bullets(enemy_bullets, dt);
   
-  //Checking for bullet --- ship collisions
+  //Checking for bullet --- enemy ship collisions
   check_collisions(bullets, enemies);
-  
+
+  //Checking for enemy bullet --- myShip collisions
+  check_ship_collisions(myShip, enemy_bullets);
+    
   apply_actions(actions, myShip, bullets, dt, layers);
+    
+    if(myShip->exploded == true) {terminate = true;}
 }
 
 void Level::display()
@@ -183,6 +189,21 @@ void Level::check_collisions(std::vector<Bullet*> &bullets, std::vector<EnemyShi
 }
 
 
+void Level::check_ship_collisions(Ship *myShip, std::vector<Bullet*> &bullets)
+{
+  if(!bullets.empty()){
+    for(std::vector<Bullet*>::iterator bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++){
+      if(check_ship_collide(*bulletIt, myShip)){
+	    myShip->takeDmg(*bulletIt);
+	    (*bulletIt)->explode();
+	break;
+      }
+    }
+  }
+}
+
+
+
 void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vector<Bullet*> &bullets, float dt, std::stack<Layer*> &layers)
 {
     myShip->active_thrust_x = false;
@@ -195,7 +216,7 @@ void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vecto
                     (*it)->apply(myShip, dt);
                     break;
                 case FIRE:
-                    (*it)->apply(myShip, dt, bullets, images["bullet_image"]); 
+                    (*it)->apply(myShip, dt, bullets); 
                     break;
                 case CLICK:
                     (*it)->apply();
@@ -215,8 +236,16 @@ bool Level::check_collide(Bullet *bullet, EnemyShip *ship)
   return (dist < COLLISION_DIST);
 }
 
+bool Level::check_ship_collide(Bullet *bullet, Ship *ship)
+{
+  float x_dist = ship->x - bullet->x;
+  float y_dist = ship->y - bullet->y;
+  float dist = sqrt(pow(x_dist,2) + pow(y_dist,2));
+  return (dist < COLLISION_DIST);
+}
+
 
 Level::~Level()
 {
-   delete myShip;  bullets.clear(); enemies.clear(); enemy_bullets.clear();
+   bullets.clear(); enemies.clear(); enemy_bullets.clear();
 }
