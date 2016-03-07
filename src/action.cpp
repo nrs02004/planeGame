@@ -47,7 +47,6 @@ void y_thruster::apply(Ship *myShip, float dt)
 void fire_weapon::apply(Ship *myShip, float dt, std::vector<Bullet*>& bullets)
 {
     myShip->fire(bullets);
-    std::cout << "FIRING 0 \n";
 }
 
 // THIS NEEDS TO BE UPDATED WHEN WE HAVE BUTTONS!

@@ -12,7 +12,6 @@
 
 
 #include "SDL2/SDL.h"
-//#include "SDL/SDL_image.h"
 #include <math.h>
 #include "display.h"
 #include "event.h"
@@ -40,14 +39,10 @@ int main( int argc, char* args[] )
   luaL_openlibs(L);
 
   std::map<std::string, Image*> images;
-  
-  images["screen"] = new Image(NULL, 0, 0);
 
-  //initialize
-  if( init(images["screen"]->image) == false )
-    {
-      return 1;
-    }
+  SDL_Renderer* renderer = NULL;
+
+  init(renderer);
 
   //Reading in images from Lua
   std::string init_filename = "init/init.lua";
@@ -58,26 +53,26 @@ int main( int argc, char* args[] )
   //Loading all the images
   for(auto imageIt = image_dat.begin(); imageIt != image_dat.end(); imageIt++){
     images[(*imageIt)->name] = new Image(NULL, (*imageIt)->width, (*imageIt)->height);
-    (images[(*imageIt)->name])->image = load_image((*imageIt)->path, images["screen"]->image);
+    (images[(*imageIt)->name])->image = load_texture((*imageIt)->path, renderer);
   }
-  
+
 
   SDL_Event event;
-  
+
   Uint32 old_time, current_time;
   float dt;
   current_time = SDL_GetTicks();
-  
+
   //Quit flag
   bool quit = false;
-  
-    
-    std::vector<Image*> ship_images;
-    ship_images.push_back(images["ship_image"]);
-    ship_images.push_back(images["ship_imageL"]);
-    ship_images.push_back(images["ship_imageR"]);
-    ship_images.push_back(images["ship_imageLL"]);
-    ship_images.push_back(images["ship_imageRR"]);
+
+
+  std::vector<Image*> ship_images;
+  ship_images.push_back(images["ship_image"]);
+  ship_images.push_back(images["ship_imageL"]);
+  ship_images.push_back(images["ship_imageR"]);
+  ship_images.push_back(images["ship_imageLL"]);
+  ship_images.push_back(images["ship_imageRR"]);
 
     Ship *myShip = new Ship(240, 190, &ship_images);
 
@@ -88,30 +83,31 @@ int main( int argc, char* args[] )
     std::vector<Weapon_dat*> weapon_dat = lua_get_weapons(L, weapon_data);
 
     std::map<std::string, Weapon*> weapon_list;
-    
+
     for(auto wIt = weapon_dat.begin(); wIt != weapon_dat.end(); wIt++){
       Weapon *newWeapon = new Weapon((*wIt)->alternate, (*wIt)->portWidth,
 				     (*wIt)->cool_down_length, (*wIt)->bullet_accel_x,
 				     (*wIt)->bullet_accel_y, (*wIt)->bullet_init_speed_x,
 				     (*wIt)->bullet_init_speed_y, (*wIt)->bullet_dmg,
 				     images[(*wIt)->bullet_name]);
-     
+
       weapon_list[(*wIt)->gun_name] = newWeapon;
-      std::cout << (*wIt)->gun_name << " ** \n";
 
-      }		     
+      }
 
-    myShip->add_weapon(weapon_list["green_machine_gun"]);
+    myShip->add_weapon(weapon_list["purple_machine_gun"]);
     myShip->add_weapon(weapon_list["green_missile_launcher"]);
-    
+    myShip->add_weapon(weapon_list["blue_minigun_L"]);
+    myShip->add_weapon(weapon_list["blue_minigun_R"]);
+
     std::vector<Action*> actions;
 
     std::stack<Layer*> layers; // Creating the layer stack
-    
-    Intro* intro = new Intro(L, images, myShip);
-    
+
+    Intro* intro = new Intro(L, images, myShip, renderer);
+
     layers.push(intro); //Adding the intro layer
-    
+
     srand(time(0));
 
     current_time = SDL_GetTicks();
@@ -123,27 +119,27 @@ int main( int argc, char* args[] )
 
 	  //Checking for key presses
 	  handle_event(event, quit, actions);
-	  
+
         (layers.top())->update(dt,actions,layers);
         (layers.top())->display();
-        
+
         //Removing Layers that have ended
         while(layers.top()->terminate == true){
             layers.pop();
         }
 
 	}
-          
+
     clean_up(images);
     delete myShip;
-    
+
     return 0;
 }
 
 void clean_up(std::map<std::string, Image*> &images)
 {
   // CLEAN UP IMAGES
-  for(std::map<std::string, Image*>::iterator imageIt = images.begin(); imageIt != images.end(); imageIt++){
+    for(std::map<std::string, Image*>::iterator imageIt = images.begin(); imageIt != images.end(); imageIt++){
     delete (imageIt->second);
   }
   SDL_DestroyWindow( gWindow );
@@ -157,5 +153,5 @@ float update_time(Uint32 &old_time, Uint32 &current_time)
     old_time = current_time;
     current_time = SDL_GetTicks();
     return (current_time - old_time) / 1000.0f;
-    
+
 }

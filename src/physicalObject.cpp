@@ -11,7 +11,6 @@ PhysicalObject::PhysicalObject(float init_x, float init_y, std::vector<Image*> *
 
 PhysicalObject::PhysicalObject(float init_x, float init_y, Image *init_image)
 {
-  std::cout << "HIHI";
   x = init_x;
   y = init_y;
   my_images = new std::vector<Image*>;

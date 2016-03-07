@@ -102,7 +102,7 @@ std::vector<Ship_dat*> lua_get_ships(lua_State *L, const std::string& key){
     
     int x,y,speed,life;
     float cool_down_length;
-    std::string image_file;
+    std::string name;
     
     while(lua_next(L, -2)) {
         x = lua_get_float_from_table(L, "x");
@@ -110,9 +110,9 @@ std::vector<Ship_dat*> lua_get_ships(lua_State *L, const std::string& key){
         speed = lua_get_float_from_table(L, "speed");
         life = lua_get_float_from_table(L, "life");
         cool_down_length = lua_get_float_from_table(L, "cool_down_length");
-        image_file = lua_get_string_from_table(L, "image_file");
+        name = lua_get_string_from_table(L, "name");
         
-        Ship_dat* ship_dat = new Ship_dat(speed,life,cool_down_length,image_file,x,y);
+        Ship_dat* ship_dat = new Ship_dat(speed,life,cool_down_length,name,x,y);
         outp.push_back(ship_dat);
         lua_pop(L, 1);
     }

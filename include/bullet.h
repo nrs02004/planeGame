@@ -10,7 +10,7 @@
 #define __airplaneGame__bullet__
 
 #include <iostream>
-#include "SDL/SDL.h"
+#include "SDL2/SDL.h"
 #include "defs.h"
 #include "image.h"
 #include "physicalObject.h"

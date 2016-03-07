@@ -14,7 +14,7 @@
 #include <functional>
 #include <stack>
 #include "SDL2/SDL.h"
-//#include "SDL/SDL_image.h"
+#include "SDL2_image/SDL_image.h"
 #include "enemyShip.h"
 #include "vector"
 #include "string"
@@ -33,9 +33,9 @@
 class Level : public Layer
 {
 public:
-  Level(std::string, lua_State*, std::map<std::string, Image*>, Ship* myShip) ;
+  Level(std::string, lua_State*, std::map<std::string, Image*>, Ship* myShip, SDL_Renderer*) ;
   ~Level();
-    
+
   void update(float, std::vector<Action*> &, std::stack<Layer*> &layers);
   void update_enemies(std::vector<EnemyShip*> &, float);
   void update_ship(Ship*, float);
@@ -48,7 +48,7 @@ public:
   bool check_ship_collide(Bullet*, Ship*);
   void apply_actions(std::vector<Action*> &,Ship*, std::vector<Bullet*> &, float, std::stack<Layer*> &);
   void display();
-    
+
     float currComplete, speed;
     std::vector<EnemyShip*> future_enemies;
     std::map<std::string, Image*> images;

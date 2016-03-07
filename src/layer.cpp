@@ -4,8 +4,9 @@
 #include "layer.h"
 #include "level.h"
 
-Layer::Layer(){
+Layer::Layer(SDL_Renderer* _renderer){
     terminate = false;
+    renderer = _renderer;
 }
 
 
@@ -13,7 +14,7 @@ Layer::Layer(){
 
 // Defining stuff for pause layer
 
-pause::pause() : Layer(){}
+pause::pause(SDL_Renderer* _renderer) : Layer(_renderer){}
 
 void pause::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &layers)
 {
@@ -39,7 +40,7 @@ void pause::display(){}
 
 // Defining stuff for pause layer
 
-Intro::Intro(lua_State *_L, std::map<std::string, Image*> _images, Ship *_myShip) : Layer()
+Intro::Intro(lua_State *_L, std::map<std::string, Image*> _images, Ship *_myShip, SDL_Renderer* _renderer) : Layer(_renderer)
 {
     L = _L;
     images = _images;
@@ -56,13 +57,13 @@ void Intro::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
         std::string filename="level/level1.lua";
 	myShip->life = 10; // refilling life
 	myShip->exploded = 0;
-	
+
 	/* This is a crap way to do this; fix it! */
 	lua_close(L);
 	L = luaL_newstate();
 	luaL_openlibs(L);
 
-        Level* Level1 = new Level(filename, L, images, myShip);
+        Level* Level1 = new Level(filename, L, images, myShip, renderer);
         layers.push(Level1);
 	start_level = false;
 	count++;

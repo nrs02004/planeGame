@@ -38,9 +38,11 @@ bool EnemyShip::within_bounds(float max_y, float max_x)
 void EnemyShip::fire(std::vector<Bullet*>& enemy_bullets, Image* bullet_image)
 {
   Bullet *myBullet = new Bullet(x, y, BULLETSPEEDX, -BULLETSPEEDY, 0, bullet_image);
-        enemy_bullets.push_back(myBullet);
-        cool_down_timer = cool_down_length;
-	firing = false;
+
+  (*((PhysicalObject*)myBullet)->my_images)[0]->angle = 180; // flipping the bullet
+  enemy_bullets.push_back(myBullet);
+  cool_down_timer = cool_down_length;
+  firing = false;
 }
 
 void EnemyShip::takeDmg(Bullet *bulletIt)
