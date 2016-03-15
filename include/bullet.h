@@ -14,10 +14,13 @@
 #include "defs.h"
 #include "image.h"
 #include "physicalObject.h"
+#include "color.h"
+#include "hitbox.h"
 
 class Bullet : public PhysicalObject{
 public:
-  Bullet(float init_x, float init_y, float init_vel_x, float init_vel_y, float init_accel_y, Image* init_bullet_image);
+  Bullet(float init_x, float init_y, float init_vel_x, float init_vel_y, float init_accel_y, float _damage, Image* init_bullet_image, Color _color, std::vector<Hitbox> hitboxes);
+  Bullet(float init_x, float init_y, float init_vel_x, float init_vel_y, float init_accel_y, Image* init_bullet_image, Color _color); //remove this crap!
   ~Bullet();
     void update(float dt);
     bool within_bounds(float max_y, float max_x);

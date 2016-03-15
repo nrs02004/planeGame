@@ -11,11 +11,12 @@
 #include "lua/lua.hpp"
 #include "image.h"
 #include "SDL2/SDL.h"
+#include "color.h"
 
 class Layer
 {
 public:
-    Layer(SDL_Renderer*);
+  Layer(SDL_Renderer* );
     virtual void update(float, std::vector<Action*> &, std::stack<Layer*> &);
     virtual void display();
 

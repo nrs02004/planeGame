@@ -9,8 +9,8 @@
 #include "enemyShip.h"
 #include <math.h>
 
-EnemyShip::EnemyShip(float init_x, float init_y, float _speed, float _cool_down_length, float _life, Image* init_enemy_image)
-  : PhysicalObject(init_x, init_y, init_enemy_image)
+EnemyShip::EnemyShip(float init_x, float init_y, float _speed, float _cool_down_length, float _life, Image* init_enemy_image, Color _color, std::vector<Hitbox> _hitboxes)
+  : PhysicalObject(init_x, init_y, init_enemy_image, _color, _hitboxes)
 {
   speed = _speed;
   cool_down_length = _cool_down_length;
@@ -37,9 +37,9 @@ bool EnemyShip::within_bounds(float max_y, float max_x)
 
 void EnemyShip::fire(std::vector<Bullet*>& enemy_bullets, Image* bullet_image)
 {
-  Bullet *myBullet = new Bullet(x, y, BULLETSPEEDX, -BULLETSPEEDY, 0, bullet_image);
+  Bullet *myBullet = new Bullet(x, y, BULLETSPEEDX, -BULLETSPEEDY, 0, bullet_image, color);
 
-  (*((PhysicalObject*)myBullet)->my_images)[0]->angle = 180; // flipping the bullet
+  myBullet->angle = 180; // flipping the bullet
   enemy_bullets.push_back(myBullet);
   cool_down_timer = cool_down_length;
   firing = false;
@@ -47,6 +47,7 @@ void EnemyShip::fire(std::vector<Bullet*>& enemy_bullets, Image* bullet_image)
 
 void EnemyShip::takeDmg(Bullet *bulletIt)
 {
+  //  std::cout << "bullet dmg: " << bulletIt->damage << "life: " << life << "\n";
   life = life - bulletIt->damage;
 }
 

@@ -31,6 +31,7 @@
 #include "weapon.h"
 
 SDL_Window* gWindow = NULL;
+std::map<std::string, Color*> colors;
 
 int main( int argc, char* args[] )
 {
@@ -54,8 +55,21 @@ int main( int argc, char* args[] )
   for(auto imageIt = image_dat.begin(); imageIt != image_dat.end(); imageIt++){
     images[(*imageIt)->name] = new Image(NULL, (*imageIt)->width, (*imageIt)->height);
     (images[(*imageIt)->name])->image = load_texture((*imageIt)->path, renderer);
+    SDL_SetTextureBlendMode( (images[(*imageIt)->name])->image, SDL_BLENDMODE_BLEND ); // setting blending
+    SDL_SetTextureAlphaMod( (images[(*imageIt)->name])->image, (*imageIt)->alpha );
   }
-
+  
+  // Reading in colors from Lua
+  std::string colors_filename = "init/colors.lua";
+  load_file(L, colors_filename);
+  std::string color_data = "colors";
+  std::vector<Color_dat*> color_dat = lua_get_colors(L, color_data);
+  
+  //Load colors
+  for(auto colorIt = color_dat.begin(); colorIt != color_dat.end(); colorIt++){
+    colors[(*colorIt)->name] = new Color((*colorIt)->r, (*colorIt)->g, (*colorIt)->b);
+  }
+  
 
   SDL_Event event;
 
@@ -66,6 +80,9 @@ int main( int argc, char* args[] )
   //Quit flag
   bool quit = false;
 
+  std::string myShip_filename = "objects/myShip.lua";
+  load_file(L, myShip_filename);
+  myShip_dat myShip_data = lua_get_myShip(L,"ship");
 
   std::vector<Image*> ship_images;
   ship_images.push_back(images["ship_image"]);
@@ -74,7 +91,7 @@ int main( int argc, char* args[] )
   ship_images.push_back(images["ship_imageLL"]);
   ship_images.push_back(images["ship_imageRR"]);
 
-    Ship *myShip = new Ship(240, 190, &ship_images);
+  Ship *myShip = new Ship(240, 190, &ship_images, *colors[myShip_data.color_name], myShip_data.accel, myShip_data.max_vel, myShip_data.life, myShip_data.hitboxes);
 
     // loading weapons
     std::string weapon_filename = "objects/weapon_list.lua";
@@ -89,7 +106,9 @@ int main( int argc, char* args[] )
 				     (*wIt)->cool_down_length, (*wIt)->bullet_accel_x,
 				     (*wIt)->bullet_accel_y, (*wIt)->bullet_init_speed_x,
 				     (*wIt)->bullet_init_speed_y, (*wIt)->bullet_dmg,
-				     images[(*wIt)->bullet_name]);
+				     images[(*wIt)->bullet_name],
+				     *colors[(*wIt)->bullet_color],
+				     (*wIt)->hitboxes);
 
       weapon_list[(*wIt)->gun_name] = newWeapon;
 
@@ -99,7 +118,7 @@ int main( int argc, char* args[] )
     myShip->add_weapon(weapon_list["green_missile_launcher"]);
     myShip->add_weapon(weapon_list["blue_minigun_L"]);
     myShip->add_weapon(weapon_list["blue_minigun_R"]);
-
+    
     std::vector<Action*> actions;
 
     std::stack<Layer*> layers; // Creating the layer stack
@@ -132,7 +151,7 @@ int main( int argc, char* args[] )
 
     clean_up(images);
     delete myShip;
-
+  
     return 0;
 }
 

@@ -3,10 +3,17 @@ fast_speed = 800.0
 
 fast_accel = 1600.0
 
-machine_gun={alternate = 1,
-	     portWidth = 0,
+bullet_hitboxes={{x=8-8, y=11-8, r=4},
+		 {x=8-8, y=4-8, r=4}}
+
+pea_hitboxes={{x=2-2, y=2-2, r=2}}
+
+pellet_hitboxes={{x=4-4, y=3-4, r=4}}
+
+machine_gun={alternate = -1,
+	     portWidth = 25,
 	     fireport = 1,
-	     cool_down_length = 0.1}
+	     cool_down_length = 0.15}
 
 minigun_L={alternate = 1,
 	     portWidth = -10,
@@ -19,7 +26,7 @@ minigun_R={alternate = 1,
 	     cool_down_length = 0.05}
 
 missle_launcher={alternate = -1,
-		 portWidth = 25.0,
+		 portWidth = 35.0,
 		 fireport = 1,
 		 cool_down_length = 0.3}
 		 
@@ -27,36 +34,57 @@ green_bullet={bullet_init_speed_x = 0.0,
 	      bullet_init_speed_y = fast_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = 0,
-	      bullet_dmg = 1.0,
-	      bullet_name="bullet_image"}
+	      bullet_dmg = 100.0,
+	      bullet_name="tri_bullet",
+	      bullet_color = "green",
+	      hitboxes = bullet_hitboxes}
 
-green_bullet={bullet_init_speed_x = 0.0,
-	      bullet_init_speed_y = fast_speed,
-	      bullet_accel_x = 0,
-	      bullet_accel_y = 0,
-	      bullet_dmg = 1.0,
-	      bullet_name="green_bullet"}
 
 purple_bullet={bullet_init_speed_x = 0.0,
 	      bullet_init_speed_y = fast_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = 0,
 	      bullet_dmg = 3.0,
-	      bullet_name="purple_bullet"}
+	      bullet_name="tri_bullet",
+	      bullet_color = "purple",
+	      hitboxes = bullet_hitboxes}
 
 blue_bullet={bullet_init_speed_x = 0.0,
 	      bullet_init_speed_y = fast_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = 0,
 	      bullet_dmg = 5.0,
-	      bullet_name="blue_bullet"}
+	      bullet_name="tri_bullet",
+	      bullet_color = "blue",
+	      hitboxes = bullet_hitboxes}
 
 orange_bullet={bullet_init_speed_x = 0.0,
 	      bullet_init_speed_y = fast_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = 0,
 	      bullet_dmg = 10.0,
-	      bullet_name="orange_bullet"}
+	      bullet_name="tri_bullet",
+	      bullet_color = "orange",
+	      hitboxes = bullet_hitboxes}
+
+
+blue_pellet={bullet_init_speed_x = 0.0,
+             bullet_init_speed_y = fast_speed,
+             bullet_accel_x = 0,
+             bullet_accel_y = 0,
+             bullet_dmg = 10.0,
+             bullet_name="circle_bullet",
+             bullet_color = "blue",
+	     hitboxes = pellet_hitboxes}
+
+purple_pea={bullet_init_speed_x = 0.0,
+             bullet_init_speed_y = fast_speed,
+             bullet_accel_x = 0,
+             bullet_accel_y = 0,
+             bullet_dmg = 5.0,
+             bullet_name="tiny_bullet",
+             bullet_color = "purple",
+	     hitboxes = pea_hitboxes}
 
 
 green_missile={bullet_init_speed_x = 0.0,
@@ -64,7 +92,9 @@ green_missile={bullet_init_speed_x = 0.0,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = fast_accel,
 	      bullet_dmg = 50.0,
-	      bullet_name="green_bullet"}
+	      bullet_name="tri_bullet",
+	      bullet_color = "green",
+	      hitboxes = bullet_hitboxes}
 
 
 -- combining lists --

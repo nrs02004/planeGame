@@ -12,7 +12,6 @@ public:
   ~Image();
 
   SDL_Texture* image;
-  double angle;
   float width, height;
 };
 

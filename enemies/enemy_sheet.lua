@@ -1,22 +1,40 @@
+--[[ FIX BY SUBTRACTING HALF OF HEIGHT AND WIDTH --]]
+
+tri_hitboxes = {{x = 10-40, y = 4-20, r = 5},
+	      	 {x = 23-40, y = 9-20, r = 10},
+		 {x = 39-40, y = 9-20, r = 10},
+		 {x = 55-40, y = 9-20, r = 10},
+		 {x = 68-40, y = 4-20, r = 5},
+		 {x = 39-40, y = 26-20, r = 10}}
+
+
 green_baddie={speed = 200,
               life = 50,
               cool_down_length = 50,
-              name = "green_tri_enemy"}
+              name = "tri_enemy",
+	      color = "green",
+	      hitboxes = tri_hitboxes}
 
 blue_baddie={speed = 200,
              life = 100,
              cool_down_length = 50,
-             name = "blue_tri_enemy"}
+             name = "tri_enemy",
+	     color = "blue",
+	     hitboxes = tri_hitboxes}
 
 purple_baddie={speed = 200,
                life = 20,
                cool_down_length = 40,
-               name = "purple_tri_enemy"}
+               name = "tri_enemy",
+	       color = "purple",
+	       hitboxes = tri_hitboxes}
 
 orange_baddie={speed = 200,
                life = 80,
                cool_down_length = 20,
-               name = "orange_tri_enemy"}
+               name = "tri_enemy",
+	       color = "orange",
+	       hitboxes = tri_hitboxes}
 
 -- Creates a baddie with given x and y position --
 function create(baddie, x, y)

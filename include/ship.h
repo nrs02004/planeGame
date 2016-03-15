@@ -16,14 +16,15 @@
 #include "image.h"
 #include "physicalObject.h"
 #include "weapon.h"
+#include "color.h"
 
 class Ship : public PhysicalObject{
 public:
-  Ship(float, float, std::vector<Image*> *);
+  Ship(float, float, std::vector<Image*> *, Color, float, float, float, std::vector<Hitbox>);
   ~Ship();
 
   void add_weapon(Weapon*);
-    
+
     void update(float dt);
     void x_thrust(float power);
     void y_thrust(float power);
@@ -32,7 +33,7 @@ public:
     void fire(std::vector<Bullet*>& bullets);
     void enforce_bounds(float, float);
     void takeDmg(Bullet*);
-    
+
     float x_vel,y_vel,max_vel,accel, life;
     bool active_thrust_x, active_thrust_y, exploded;
     int banking;

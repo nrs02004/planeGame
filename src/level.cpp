@@ -14,6 +14,8 @@
 #include "lua_binding.h"
 #include "lua/lua.hpp"
 #include "defs.h"
+#include "globals.h"
+
 
 bool cmp( const EnemyShip *s1, const EnemyShip *s2 ){return (s1)->y < (s2)->y;}
 
@@ -43,7 +45,9 @@ Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _
   for(auto shipIt = ship_dat.begin(); shipIt != ship_dat.end(); shipIt++){
     EnemyShip *newEnemy = new EnemyShip((*shipIt)->x, (*shipIt)->y,
 					(*shipIt)->speed,(*shipIt)->cool_down_length,
-					(*shipIt)->life, images[(*shipIt)->name]);
+					(*shipIt)->life, images[(*shipIt)->name],
+					*colors[(*shipIt)->color],
+					(*shipIt)->hitboxes);
     future_enemies.push_back(newEnemy);
     delete(*shipIt);
   }
@@ -136,7 +140,7 @@ void Level::enemy_actions(std::vector<EnemyShip*> &enemies, std::vector<Bullet*>
       for(std::vector<EnemyShip*>::iterator it = enemies.begin(); it != enemies.end();it++){
 	if((*it)->firing == true)
 	  {
-	    (*it)->fire(enemy_bullets, images["orange_bullet"]);
+	    (*it)->fire(enemy_bullets, images["tri_bullet"]);
 	  }
       }
     }
@@ -194,7 +198,7 @@ void Level::check_ship_collisions(Ship *myShip, std::vector<Bullet*> &bullets)
 {
   if(!bullets.empty()){
     for(std::vector<Bullet*>::iterator bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++){
-      if(check_ship_collide(*bulletIt, myShip)){
+      if(check_collide(*bulletIt, myShip)){
 	    myShip->takeDmg(*bulletIt);
 	    (*bulletIt)->explode();
 	break;
@@ -228,23 +232,20 @@ void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vecto
     actions.clear();
 }
 
-
-bool Level::check_collide(Bullet *bullet, EnemyShip *ship)
+bool Level::check_collide(PhysicalObject *obj1, PhysicalObject *obj2)
 {
-  float x_dist = ship->x - bullet->x;
-  float y_dist = ship->y - bullet->y;
-  float dist = sqrt(pow(x_dist,2) + pow(y_dist,2));
-  return (dist < COLLISION_DIST);
+  for(auto hitBoxIt1 = obj1->hitboxes.begin(); hitBoxIt1 != obj1->hitboxes.end(); hitBoxIt1++){
+    for(auto hitBoxIt2 = obj2->hitboxes.begin(); hitBoxIt2 != obj2->hitboxes.end(); hitBoxIt2++){
+      float x_dist = ( obj1->x + hitBoxIt1->x ) - ( obj2->x + hitBoxIt2->x );
+      float y_dist = ( obj1->y + hitBoxIt1->y ) - ( obj2->y + hitBoxIt2->y );
+      float dist = sqrt(pow(x_dist,2) + pow(y_dist,2));
+      if(dist <= ( hitBoxIt1->r + hitBoxIt2->r )){
+      return true;
+      }
+    }
+  }
+  return false;
 }
-
-bool Level::check_ship_collide(Bullet *bullet, Ship *ship)
-{
-  float x_dist = ship->x - bullet->x;
-  float y_dist = ship->y - bullet->y;
-  float dist = sqrt(pow(x_dist,2) + pow(y_dist,2));
-  return (dist < COLLISION_DIST);
-}
-
 
 Level::~Level()
 {

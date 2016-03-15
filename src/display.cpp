@@ -35,11 +35,12 @@ SDL_Texture* load_texture( std::string filename , SDL_Renderer* renderer )
   return newTexture;
 }
 
-void apply_texture( int x, int y, int width, int height, SDL_Texture* source, SDL_Renderer* renderer, double angle)
+void apply_texture( int x, int y, int width, int height, SDL_Texture* source, SDL_Renderer* renderer, double angle, Color color)
 {
     //Make a temporary rectangle to hold the offsets
   SDL_Rect renderQuad = {x, y, width, height};
   //add the texture
+  SDL_SetTextureColorMod(source, color.r, color.g, color.b); 
   SDL_RenderCopyEx( renderer, source, NULL, &renderQuad, angle, NULL, SDL_FLIP_NONE);
 }
 
@@ -69,7 +70,7 @@ bool init(SDL_Renderer* &renderer)
 
 void apply_PhysicalObject(SDL_Renderer *renderer, PhysicalObject *obj, int index = 0)
 {
-  apply_texture(obj->x - (*(obj->my_images))[index]->width/2, obj->y - (*(obj->my_images))[index]->height/2,  (*(obj->my_images))[index]->width,  (*(obj->my_images))[index]->height, (*(obj->my_images))[index]->image, renderer, (*(obj->my_images))[index]->angle);
+  apply_texture(obj->x - (*(obj->my_images))[index]->width/2, obj->y - (*(obj->my_images))[index]->height/2,  (*(obj->my_images))[index]->width,  (*(obj->my_images))[index]->height, (*(obj->my_images))[index]->image, renderer, obj->angle, obj->color);
 }
 
 void apply_enemyShip(SDL_Renderer *renderer, EnemyShip *ship)
@@ -99,7 +100,8 @@ bool update_disp(SDL_Renderer *renderer, Image* background, Ship* myShip, std::v
 {
   SDL_RenderClear(renderer);
     //Apply the background to screen
-  apply_texture( 0, 0, background->width, background->height, background->image, renderer, 0 );
+  //  apply_texture( 0, 0, background->width, background->height, background->image, renderer, 0 , Color(255,255,255));
+    apply_texture( 0, 0, background->width, background->height, background->image, renderer, 0 , Color(0,0,0));
 
     //Apply bullets to screen
     if(!bullets.empty())

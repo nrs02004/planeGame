@@ -16,10 +16,12 @@
 #include "action.h"
 #include "image.h"
 #include "physicalObject.h"
+#include "color.h"
+#include "hitbox.h"
 
 class EnemyShip : public PhysicalObject{
 public:
-  EnemyShip(float, float, float, float, float, Image*);
+  EnemyShip(float, float, float, float, float, Image*, Color, std::vector<Hitbox>);
   ~EnemyShip();
     
     void update(float dt);
@@ -29,6 +31,7 @@ public:
 
     float speed,cool_down_length, cool_down_timer,life;
     bool firing, exploded;
+    std::vector<Hitbox> hitboxes;
 };
 
 

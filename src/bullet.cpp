@@ -10,14 +10,28 @@
 #include "defs.h"
 #include<iostream>
 
-Bullet::Bullet(float init_x, float init_y, float init_vel_x, float init_vel_y, float init_accel_y, Image* init_bullet_image)
-  : PhysicalObject(init_x, init_y, init_bullet_image)
+Bullet::Bullet(float init_x, float init_y, float init_vel_x, float init_vel_y, float init_accel_y, float _damage, Image* init_bullet_image, Color _color, std::vector<Hitbox> _hitboxes)
+  : PhysicalObject(init_x, init_y, init_bullet_image, _color, _hitboxes)
+{
+    x_vel = init_vel_x;
+    y_vel = init_vel_y;
+    y_accel = init_accel_y;
+    exploded = 0;
+    damage = _damage;
+    angle = 0;
+}
+
+// THIS IS CRAP AND SHOULD GO AWAY ONCE ENEMIES GET WEAPONS!
+
+Bullet::Bullet(float init_x, float init_y, float init_vel_x, float init_vel_y, float init_accel_y, Image* init_bullet_image, Color _color)
+  : PhysicalObject(init_x, init_y, init_bullet_image, _color)
 {
     x_vel = init_vel_x;
     y_vel = init_vel_y;
     y_accel = init_accel_y;
     exploded = 0;
     damage = 30;
+    angle = 0;
 }
 
 void Bullet::update(float dt)

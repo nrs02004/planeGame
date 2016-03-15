@@ -21,8 +21,9 @@
 #include "enemyShip.h"
 #include "image.h"
 #include "physicalObject.h"
+#include "color.h"
 
-void apply_texture( int, int, int, int, SDL_Texture*, SDL_Renderer*, double );
+void apply_texture( int, int, int, int, SDL_Texture*, SDL_Renderer*, double, Color );
 SDL_Texture* load_texture( std::string, SDL_Renderer* );
 bool init(SDL_Renderer*&);
 bool update_disp(SDL_Renderer*, Image*, Ship*, std::vector<Bullet*>&, std::vector<EnemyShip*>&, std::vector<Bullet*>&);

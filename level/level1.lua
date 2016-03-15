@@ -44,3 +44,6 @@ enemy_stack = ListConcat(enemy_stack, first_wave)
 for k=1,20 do
     enemy_stack = ListConcat(enemy_stack, push_back(deepcopy(first_wave), k*(2550-900)))
 end
+
+
+print(enemy_stack[100].hitboxes[4].r)

@@ -11,17 +11,17 @@
 #include <math.h>
 
 
-Ship::Ship(float init_x, float init_y, std::vector<Image*> *ship_images) 
-  : PhysicalObject(init_x, init_y, ship_images)
+Ship::Ship(float init_x, float init_y, std::vector<Image*> *ship_images, Color _color, float _accel, float _max_vel, float _life, std::vector<Hitbox> _hitboxes)
+  : PhysicalObject(init_x, init_y, ship_images, _color, _hitboxes)
 {
   x_vel = 0;
   y_vel = 0;
-  accel = 1600;
-  max_vel = 400;
+  accel = _accel;
+  max_vel = _max_vel;
   active_thrust_x = false;
   active_thrust_y = false;
   banking = 0;
-  life = 100;
+  life = _life;
   exploded = 0;
 }
 
@@ -49,9 +49,9 @@ void Ship::update(float dt)
   for(auto weapon_it = weapons.begin(); weapon_it != weapons.end(); weapon_it++){
     (*weapon_it)->update(dt);
   }
-    
+
     if(life <= 0.0){exploded = true;}
-    
+
 }
 
 void Ship::x_thrust(float power)
@@ -59,7 +59,7 @@ void Ship::x_thrust(float power)
     x_vel = x_vel + power;
     x_vel = copysignf(1.0, x_vel) * fmin(max_vel, fabs(x_vel)); //stops you from exceeding max_vel
     active_thrust_x = true;
-    if(power < 0) 
+    if(power < 0)
       {
 	if(x_vel > -max_vel){ banking = -1;}
 	else{ banking = -2;}
@@ -68,7 +68,7 @@ void Ship::x_thrust(float power)
       {
 	if(x_vel < max_vel) {banking = 1;}
 	else {banking = 2;}
-      } 
+      }
 }
 
 void Ship::y_thrust(float power)
