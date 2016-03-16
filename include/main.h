@@ -17,6 +17,12 @@
 #include"enemyShip.h"
 #include"image.h"
 #include"lua/lua.hpp"
+#include"ship.h"
+
+void init_images(lua_State *, std::map<std::string, Image*>&, SDL_Renderer*);
+void init_colors(lua_State *);
+void init_weapons(lua_State *, std::map<std::string, Image*>);
+Ship* init_ship(lua_State *,  std::map<std::string, Image*>);
 
 void enemy_actions(std::vector<EnemyShip*> &, std::vector<Bullet*> &, Image*);
 void createEnemies(std::vector<EnemyShip*> &, Image*, lua_State*);

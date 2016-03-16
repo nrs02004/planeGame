@@ -27,7 +27,7 @@ Ship::Ship(float init_x, float init_y, std::vector<Image*> *ship_images, Color _
 
 void Ship::add_weapon(Weapon* weapon)
 {
-  weapons.push_back(weapon);
+  weapons.push_back(*weapon);
 }
 
 void Ship::update(float dt)
@@ -47,7 +47,7 @@ void Ship::update(float dt)
     active_thrust_y = false;
 
   for(auto weapon_it = weapons.begin(); weapon_it != weapons.end(); weapon_it++){
-    (*weapon_it)->update(dt);
+    weapon_it->update(dt);
   }
 
     if(life <= 0.0){exploded = true;}
@@ -96,7 +96,7 @@ void Ship::fire(std::vector<Bullet*>& bullets)
 {
 
   for(auto weapon_it = weapons.begin(); weapon_it != weapons.end(); weapon_it++){
-    (*weapon_it)->fire(bullets, x, y);
+    weapon_it->fire(bullets, x, y);
   }
 }
 

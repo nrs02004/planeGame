@@ -38,7 +38,7 @@ public:
     bool active_thrust_x, active_thrust_y, exploded;
     int banking;
 
-    std::vector<Weapon*> weapons;
+    std::vector<Weapon> weapons;
 };
 
 #endif /* defined(__airplaneGame__ship__) */
