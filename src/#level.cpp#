@@ -26,11 +26,8 @@ Level::Level(std::string filename, lua_State *L, Ship* _myShip) : Layer()
 
   load_file(L, filename);
 
-
-
-
   myShip = _myShip;
-    myShip->x = 500; myShip->y = 680;
+  myShip->x = 500; myShip->y = 680;
 
 
 

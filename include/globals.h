@@ -7,6 +7,7 @@
 #include "weapon.h"
 
 extern SDL_Window* gWindow; //setting the window globally
+extern SDL_Renderer* renderer;
 extern std::map<std::string, Color*> colors;
 extern std::map<std::string, Weapon*> weapon_list;
 extern std::map<std::string, Image*> images;

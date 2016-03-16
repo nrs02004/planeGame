@@ -36,7 +36,7 @@
 class Level : public Layer
 {
 public:
-  Level(std::string, lua_State*, Ship*, SDL_Renderer*) ;
+  Level(std::string, lua_State*, Ship*) ;
   ~Level();
 
   void update(float, std::vector<Action*> &, std::stack<Layer*> &layers);

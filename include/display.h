@@ -23,13 +23,13 @@
 #include "physicalObject.h"
 #include "color.h"
 
-void apply_texture( int, int, int, int, SDL_Texture*, SDL_Renderer*, double, Color );
-SDL_Texture* load_texture( std::string, SDL_Renderer* );
-bool init(SDL_Renderer*&);
-bool update_disp(SDL_Renderer*, Image*, Ship*, std::vector<Bullet*>&, std::vector<EnemyShip*>&, std::vector<Bullet*>&);
-void apply_PhysicalObject(SDL_Renderer*, PhysicalObject*, int);
-void apply_Ship(SDL_Renderer*, Ship*);
-void apply_enemyShip(SDL_Renderer*, EnemyShip*);
-void apply_Bullet(SDL_Renderer*, Bullet*);
+void apply_texture( int, int, int, int, SDL_Texture*, double, Color );
+SDL_Texture* load_texture( std::string);
+bool init_SDL();
+bool update_disp(Image*, Ship*, std::vector<Bullet*>&, std::vector<EnemyShip*>&, std::vector<Bullet*>&);
+void apply_PhysicalObject(PhysicalObject*, int);
+void apply_Ship(Ship*);
+void apply_enemyShip(EnemyShip*);
+void apply_Bullet(Bullet*);
 
 #endif /* defined(__airplaneGame__display__) */

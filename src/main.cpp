@@ -31,6 +31,7 @@
 #include "weapon.h"
 
 SDL_Window* gWindow = NULL;
+SDL_Renderer* renderer = NULL;
 std::map<std::string, Color*> colors;
 std::map<std::string, Weapon*> weapon_list;
 std::map<std::string, Image*> images;
@@ -41,12 +42,10 @@ int main( int argc, char* args[] )
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
 
-  SDL_Renderer* renderer = NULL;
-
-  init(renderer);
+  init_SDL(); 
 
   //Reading in images from Lua
-  init_images(L, renderer);
+  init_images(L);
 
   // Reading in colors from Lua
   init_colors(L);
@@ -63,7 +62,7 @@ int main( int argc, char* args[] )
 
   std::stack<Layer*> layers; // Creating the layer stack
 
-  Intro* intro = new Intro(L, myShip, renderer);
+  Intro* intro = new Intro(L, myShip);
 
   layers.push(intro); //Adding the intro layer
 
@@ -100,7 +99,7 @@ int main( int argc, char* args[] )
 }
 
 
-void init_images(lua_State *L, SDL_Renderer* renderer)
+void init_images(lua_State *L)
 {
   std::string init_filename = "init/init.lua";
   load_file(L, init_filename);
@@ -110,7 +109,7 @@ void init_images(lua_State *L, SDL_Renderer* renderer)
   //Loading all the images
   for(auto imageIt = image_dat.begin(); imageIt != image_dat.end(); imageIt++){
     images[(*imageIt)->name] = new Image(NULL, (*imageIt)->width, (*imageIt)->height);
-    (images[(*imageIt)->name])->image = load_texture((*imageIt)->path, renderer);
+    (images[(*imageIt)->name])->image = load_texture((*imageIt)->path);
     SDL_SetTextureBlendMode( (images[(*imageIt)->name])->image, SDL_BLENDMODE_BLEND ); // setting blending
     SDL_SetTextureAlphaMod( (images[(*imageIt)->name])->image, (*imageIt)->alpha );
   }

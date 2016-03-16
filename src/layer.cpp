@@ -4,9 +4,8 @@
 #include "layer.h"
 #include "level.h"
 
-Layer::Layer(SDL_Renderer* _renderer){
+Layer::Layer(){
     terminate = false;
-    renderer = _renderer;
 }
 
 
@@ -14,7 +13,7 @@ Layer::Layer(SDL_Renderer* _renderer){
 
 // Defining stuff for pause layer
 
-pause::pause(SDL_Renderer* _renderer) : Layer(_renderer){}
+pause::pause() : Layer(){}
 
 void pause::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &layers)
 {
@@ -40,7 +39,7 @@ void pause::display(){}
 
 // Defining stuff for pause layer
 
-Intro::Intro(lua_State *_L, Ship *_myShip, SDL_Renderer* _renderer) : Layer(_renderer)
+Intro::Intro(lua_State *_L, Ship *_myShip) : Layer()
 {
     L = _L;
     myShip = _myShip;
@@ -62,7 +61,7 @@ void Intro::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
 	L = luaL_newstate();
 	luaL_openlibs(L);
 
-        Level* Level1 = new Level(filename, L, myShip, renderer);
+        Level* Level1 = new Level(filename, L, myShip);
         layers.push(Level1);
 	start_level = false;
 	count++;

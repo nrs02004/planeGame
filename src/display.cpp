@@ -13,7 +13,7 @@
 #include <iostream>
 #include "globals.h"
 
-SDL_Texture* load_texture( std::string filename , SDL_Renderer* renderer )
+SDL_Texture* load_texture( std::string filename)
 {
   SDL_Texture* newTexture = NULL;
   SDL_Surface* loadedImage = IMG_Load( filename.c_str() );
@@ -35,7 +35,7 @@ SDL_Texture* load_texture( std::string filename , SDL_Renderer* renderer )
   return newTexture;
 }
 
-void apply_texture( int x, int y, int width, int height, SDL_Texture* source, SDL_Renderer* renderer, double angle, Color color)
+void apply_texture( int x, int y, int width, int height, SDL_Texture* source, double angle, Color color)
 {
     //Make a temporary rectangle to hold the offsets
   SDL_Rect renderQuad = {x, y, width, height};
@@ -45,7 +45,7 @@ void apply_texture( int x, int y, int width, int height, SDL_Texture* source, SD
 }
 
 
-bool init(SDL_Renderer* &renderer)
+bool init_SDL()
 {
 
     //Initialize all SDL subsystems
@@ -68,59 +68,59 @@ bool init(SDL_Renderer* &renderer)
     return true;
 }
 
-void apply_PhysicalObject(SDL_Renderer *renderer, PhysicalObject *obj, int index = 0)
+void apply_PhysicalObject(PhysicalObject *obj, int index = 0)
 {
-  apply_texture(obj->x - (*(obj->my_images))[index]->width/2, obj->y - (*(obj->my_images))[index]->height/2,  (*(obj->my_images))[index]->width,  (*(obj->my_images))[index]->height, (*(obj->my_images))[index]->image, renderer, obj->angle, obj->color);
+  apply_texture(obj->x - (*(obj->my_images))[index]->width/2, obj->y - (*(obj->my_images))[index]->height/2,  (*(obj->my_images))[index]->width,  (*(obj->my_images))[index]->height, (*(obj->my_images))[index]->image, obj->angle, obj->color);
 }
 
-void apply_enemyShip(SDL_Renderer *renderer, EnemyShip *ship)
+void apply_enemyShip(EnemyShip *ship)
 {
-  apply_PhysicalObject(renderer, ship);
+  apply_PhysicalObject(ship);
 }
 
-void apply_Bullet(SDL_Renderer *renderer, Bullet *bullet)
+void apply_Bullet(Bullet *bullet)
 {
-  apply_PhysicalObject(renderer, (PhysicalObject *)bullet);
+  apply_PhysicalObject((PhysicalObject *)bullet);
 }
 
-void apply_Ship(SDL_Renderer *renderer, Ship *ship)
+void apply_Ship(Ship *ship)
 {
   //  (ship->exhaust_flames)->display();
-  if(ship->banking == 0) apply_PhysicalObject(renderer, (PhysicalObject *)ship);
-  if(ship->banking == -1) apply_PhysicalObject(renderer, (PhysicalObject *)ship, 1);
-  if(ship->banking == -2) apply_PhysicalObject(renderer, (PhysicalObject *)ship, 3);
-  if(ship->banking == 1) apply_PhysicalObject(renderer, (PhysicalObject *)ship, 2);
-  if(ship->banking == 2) apply_PhysicalObject(renderer, (PhysicalObject *)ship, 4);
+  if(ship->banking == 0) apply_PhysicalObject((PhysicalObject *)ship);
+  if(ship->banking == -1) apply_PhysicalObject((PhysicalObject *)ship, 1);
+  if(ship->banking == -2) apply_PhysicalObject((PhysicalObject *)ship, 3);
+  if(ship->banking == 1) apply_PhysicalObject((PhysicalObject *)ship, 2);
+  if(ship->banking == 2) apply_PhysicalObject((PhysicalObject *)ship, 4);
 
 }
 
 
 
-bool update_disp(SDL_Renderer *renderer, Image* background, Ship* myShip, std::vector<Bullet*> &bullets, std::vector<EnemyShip*> &enemies, std::vector<Bullet*> &enemy_bullets)
+bool update_disp(Image* background, Ship* myShip, std::vector<Bullet*> &bullets, std::vector<EnemyShip*> &enemies, std::vector<Bullet*> &enemy_bullets)
 {
   SDL_RenderClear(renderer);
     //Apply the background to screen
   //  apply_texture( 0, 0, background->width, background->height, background->image, renderer, 0 , Color(255,255,255));
-    apply_texture( 0, 0, background->width, background->height, background->image, renderer, 0 , Color(0,0,0));
+    apply_texture( 0, 0, background->width, background->height, background->image, 0 , Color(0,0,0));
 
     //Apply bullets to screen
     if(!bullets.empty())
     {
         for(std::vector<Bullet*>::iterator it = bullets.begin(); it != bullets.end(); it++){
 	  //            apply_texture(it->x, it->y, it->bullet_image, screen);
-	  apply_Bullet(renderer, *it);
+	  apply_Bullet(*it);
         }
     }
 
     //Apply Ship to screen
-    apply_Ship(renderer, myShip);
+    apply_Ship(myShip);
 
     //Apply enemie bullets to screen
     if(!enemy_bullets.empty())
     {
         for(std::vector<Bullet*>::iterator it = enemy_bullets.begin(); it != enemy_bullets.end(); it++){
 	  //           apply_texture(it->x, it->y, it->bullet_image, screen);
-	  apply_PhysicalObject(renderer, *it);
+	  apply_PhysicalObject(*it);
         }
     }
 
@@ -130,7 +130,7 @@ bool update_disp(SDL_Renderer *renderer, Image* background, Ship* myShip, std::v
     {
         for(std::vector<EnemyShip*>::iterator it = enemies.begin(); it != enemies.end(); it++){
 	  //            apply_texture(it->x, it->y, it->enemy_image, screen);
-	  apply_enemyShip(renderer, *it);
+	  apply_enemyShip(*it);
         }
     }
 

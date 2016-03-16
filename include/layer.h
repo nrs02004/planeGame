@@ -16,18 +16,17 @@
 class Layer
 {
 public:
-  Layer(SDL_Renderer* );
+  Layer();
     virtual void update(float, std::vector<Action*> &, std::stack<Layer*> &);
     virtual void display();
 
     bool terminate;
-    SDL_Renderer* renderer;
 };
 
 class pause : public Layer
 {
 public:
-    pause(SDL_Renderer*);
+    pause();
     void update(float, std::vector<Action*> &, std::stack<Layer*> &);
     void display();
     void apply_actions(std::vector<Action*> &, std::stack<Layer*> &);
@@ -36,7 +35,7 @@ public:
 class Intro : public Layer
 {
 public:
-  Intro(lua_State*, Ship *, SDL_Renderer*);
+  Intro(lua_State*, Ship *);
     void update(float, std::vector<Action*> &, std::stack<Layer*> &);
     void display();
     void apply_actions(std::vector<Action*> &, std::stack<Layer*> &);

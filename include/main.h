@@ -19,7 +19,7 @@
 #include"lua/lua.hpp"
 #include"ship.h"
 
-void init_images(lua_State *, SDL_Renderer*);
+void init_images(lua_State *);
 void init_colors(lua_State *);
 void init_weapons(lua_State *);
 Ship* init_ship(lua_State *);
