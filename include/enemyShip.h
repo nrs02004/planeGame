@@ -18,20 +18,23 @@
 #include "physicalObject.h"
 #include "color.h"
 #include "hitbox.h"
+#include "weapon.h"
 
 class EnemyShip : public PhysicalObject{
 public:
   EnemyShip(float, float, float, float, float, Image*, Color, std::vector<Hitbox>);
   ~EnemyShip();
-    
+
+  void add_weapon(Weapon*);
     void update(float dt);
     bool within_bounds(float max_y, float max_x);
-    void fire(std::vector<Bullet*>& enemy_bullets, Image* bullet_image);
+    void fire(std::vector<Bullet*>& enemy_bullets);
     void takeDmg(Bullet*);
 
-    float speed,cool_down_length, cool_down_timer,life;
-    bool firing, exploded;
+    float speed, life;
+    bool exploded;
     std::vector<Hitbox> hitboxes;
+    std::vector<Weapon> weapons;
 };
 
 

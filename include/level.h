@@ -12,6 +12,7 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
+#include <map>
 #include <stack>
 #include "SDL2/SDL.h"
 #include "SDL2_image/SDL_image.h"
@@ -30,11 +31,12 @@
 #include "display.h"
 #include "layer.h"
 #include "color.h"
+#include "weapon.h"
 
 class Level : public Layer
 {
 public:
-  Level(std::string, lua_State*, std::map<std::string, Image*>, Ship* myShip, SDL_Renderer*) ;
+  Level(std::string, lua_State*, std::map<std::string, Image*>, Ship*, SDL_Renderer*) ;
   ~Level();
 
   void update(float, std::vector<Action*> &, std::stack<Layer*> &layers);

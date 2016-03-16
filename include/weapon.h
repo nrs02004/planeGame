@@ -31,6 +31,8 @@ public:
     float cool_down_timer, cool_down_length, portWidth;
     int firePort, alternate;
 
+    float angle;
+    
     //Bullet attributes
     float bullet_accel_x, bullet_accel_y, bullet_init_speed_x, bullet_init_speed_y, bullet_dmg;
     Image* bullet_image;

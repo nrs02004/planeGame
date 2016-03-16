@@ -13,28 +13,32 @@ green_baddie={speed = 200,
               cool_down_length = 50,
               name = "tri_enemy",
 	      color = "green",
-	      hitboxes = tri_hitboxes}
+	      hitboxes = tri_hitboxes,
+	      weapon = "baddie_green_gun"}
 
 blue_baddie={speed = 200,
              life = 100,
              cool_down_length = 50,
              name = "tri_enemy",
 	     color = "blue",
-	     hitboxes = tri_hitboxes}
+	     hitboxes = tri_hitboxes,
+	     weapon = "baddie_blue_gun"}
 
 purple_baddie={speed = 200,
                life = 20,
                cool_down_length = 40,
                name = "tri_enemy",
 	       color = "purple",
-	       hitboxes = tri_hitboxes}
+	       hitboxes = tri_hitboxes,
+	      weapon = "baddie_purple_gun"}
 
 orange_baddie={speed = 200,
                life = 80,
                cool_down_length = 20,
                name = "tri_enemy",
 	       color = "orange",
-	       hitboxes = tri_hitboxes}
+	       hitboxes = tri_hitboxes,
+	       weapon = "baddie_orange_gun"}
 
 -- Creates a baddie with given x and y position --
 function create(baddie, x, y)

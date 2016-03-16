@@ -119,7 +119,7 @@ std::vector<Ship_dat*> lua_get_ships(lua_State *L, const std::string& key){
 
     int x,y,speed,life;
     float cool_down_length;
-    std::string name, color;
+    std::string name, color, weapon_name;
 
     while(lua_next(L, -2)) {
         x = lua_get_float_from_table(L, "x");
@@ -129,11 +129,12 @@ std::vector<Ship_dat*> lua_get_ships(lua_State *L, const std::string& key){
         cool_down_length = lua_get_float_from_table(L, "cool_down_length");
         name = lua_get_string_from_table(L, "name");
 	color = lua_get_string_from_table(L, "color");
+	weapon_name = lua_get_string_from_table(L, "weapon");
 
 	std::string hitbox_string = "hitboxes";
 	std::vector<Hitbox> hitboxes = lua_get_hitboxes_from_table(L,hitbox_string);
 
-        Ship_dat* ship_dat = new Ship_dat(speed,life,cool_down_length,name,x,y,color, hitboxes);
+        Ship_dat* ship_dat = new Ship_dat(speed,life,cool_down_length,name,x,y,color,weapon_name,hitboxes);
         outp.push_back(ship_dat);
         lua_pop(L, 1);
     }
@@ -179,7 +180,7 @@ std::vector<Weapon_dat*> lua_get_weapons(lua_State *L, const std::string& key){
       outp.push_back(weapon_dat);
       lua_pop(L, 1);
       }
-    lua_pop(L, 2);
+    lua_pop(L, 1);
     return outp;
 }
 

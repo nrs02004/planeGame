@@ -1,7 +1,7 @@
 ship = {weapons = {"purple_machine_gun",
        		   "blue_minigun_L",
 		   "blue_minigun_R",
-		   "green_missle_launcher"},
+		   "green_missile_launcher"},
 	color = "orange",
 	accel = 1600,
 	max_vel = 400, 

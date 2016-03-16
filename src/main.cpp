@@ -32,6 +32,7 @@
 
 SDL_Window* gWindow = NULL;
 std::map<std::string, Color*> colors;
+std::map<std::string, Weapon*> weapon_list;
 
 int main( int argc, char* args[] )
 {
@@ -79,28 +80,16 @@ int main( int argc, char* args[] )
 
   //Quit flag
   bool quit = false;
-
-  std::string myShip_filename = "objects/myShip.lua";
-  load_file(L, myShip_filename);
-  myShip_dat myShip_data = lua_get_myShip(L,"ship");
-
-  std::vector<Image*> ship_images;
-  ship_images.push_back(images["ship_image"]);
-  ship_images.push_back(images["ship_imageL"]);
-  ship_images.push_back(images["ship_imageR"]);
-  ship_images.push_back(images["ship_imageLL"]);
-  ship_images.push_back(images["ship_imageRR"]);
-
-  Ship *myShip = new Ship(240, 190, &ship_images, *colors[myShip_data.color_name], myShip_data.accel, myShip_data.max_vel, myShip_data.life, myShip_data.hitboxes);
-
+    
+    
     // loading weapons
     std::string weapon_filename = "objects/weapon_list.lua";
     load_file(L, weapon_filename);
     std::string weapon_data = "weapon_list";
     std::vector<Weapon_dat*> weapon_dat = lua_get_weapons(L, weapon_data);
 
-    std::map<std::string, Weapon*> weapon_list;
-
+    //Weapon list is global
+    
     for(auto wIt = weapon_dat.begin(); wIt != weapon_dat.end(); wIt++){
       Weapon *newWeapon = new Weapon((*wIt)->alternate, (*wIt)->portWidth,
 				     (*wIt)->cool_down_length, (*wIt)->bullet_accel_x,
@@ -113,11 +102,29 @@ int main( int argc, char* args[] )
       weapon_list[(*wIt)->gun_name] = newWeapon;
 
       }
-
-    myShip->add_weapon(weapon_list["purple_machine_gun"]);
-    myShip->add_weapon(weapon_list["green_missile_launcher"]);
-    myShip->add_weapon(weapon_list["blue_minigun_L"]);
-    myShip->add_weapon(weapon_list["blue_minigun_R"]);
+    
+    
+    // Creating Ship
+    std::string myShip_filename = "objects/myShip.lua";
+    load_file(L, myShip_filename);
+    myShip_dat myShip_data = lua_get_myShip(L,"ship");
+    
+    
+    std::vector<Image*> ship_images;
+    ship_images.push_back(images["ship_image"]);
+    ship_images.push_back(images["ship_imageL"]);
+    ship_images.push_back(images["ship_imageR"]);
+    ship_images.push_back(images["ship_imageLL"]);
+    ship_images.push_back(images["ship_imageRR"]);
+    
+    Ship *myShip = new Ship(240, 190, &ship_images, *colors[myShip_data.color_name], myShip_data.accel, myShip_data.max_vel, myShip_data.life, myShip_data.hitboxes);
+    
+    // Adding Weapons to Ship
+    
+    for(auto it = (myShip_data.weapon_names).begin(); it != (myShip_data.weapon_names).end(); it++){
+        std::cout <<"\n" << *it << "\n";
+        myShip->add_weapon(weapon_list[*it]);
+    }
     
     std::vector<Action*> actions;
 

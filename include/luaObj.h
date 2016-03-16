@@ -14,9 +14,10 @@ public:
     float x;
     float y;
     std::string color;
+    std::string weapon_name;
     std::vector<Hitbox> hitboxes;
 
- Ship_dat(float _speed, float _life, float _cool_down_length, std::string _name, float _x, float _y, std::string _color, std::vector<Hitbox> _hitboxes) : speed(_speed), life(_life), cool_down_length(_cool_down_length), name(_name), x(_x), y(_y), color(_color), hitboxes(_hitboxes) {}
+ Ship_dat(float _speed, float _life, float _cool_down_length, std::string _name, float _x, float _y, std::string _color, std::string _weapon_name, std::vector<Hitbox> _hitboxes) : speed(_speed), life(_life), cool_down_length(_cool_down_length), name(_name), x(_x), y(_y), color(_color), weapon_name(_weapon_name), hitboxes(_hitboxes) {}
 };
 
 class Weapon_dat {

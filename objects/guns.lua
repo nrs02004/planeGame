@@ -1,5 +1,6 @@
 slow_speed = 150.0
 fast_speed = 800.0
+enemy_speed = 500.0
 
 fast_accel = 1600.0
 
@@ -29,9 +30,14 @@ missle_launcher={alternate = -1,
 		 portWidth = 35.0,
 		 fireport = 1,
 		 cool_down_length = 0.3}
-		 
+
+baddie_gun={alternate = 1,
+	    portWidth = 0.0,
+ 	    fireport = 0,
+  	    cool_down_length = 3}
+
 green_bullet={bullet_init_speed_x = 0.0,
-	      bullet_init_speed_y = fast_speed,
+	      bullet_init_speed_y = enemy_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = 0,
 	      bullet_dmg = 100.0,
@@ -41,7 +47,7 @@ green_bullet={bullet_init_speed_x = 0.0,
 
 
 purple_bullet={bullet_init_speed_x = 0.0,
-	      bullet_init_speed_y = fast_speed,
+	      bullet_init_speed_y = enemy_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = 0,
 	      bullet_dmg = 3.0,
@@ -50,7 +56,7 @@ purple_bullet={bullet_init_speed_x = 0.0,
 	      hitboxes = bullet_hitboxes}
 
 blue_bullet={bullet_init_speed_x = 0.0,
-	      bullet_init_speed_y = fast_speed,
+	      bullet_init_speed_y = enemy_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = 0,
 	      bullet_dmg = 5.0,
@@ -59,7 +65,7 @@ blue_bullet={bullet_init_speed_x = 0.0,
 	      hitboxes = bullet_hitboxes}
 
 orange_bullet={bullet_init_speed_x = 0.0,
-	      bullet_init_speed_y = fast_speed,
+	      bullet_init_speed_y = enemy_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = 0,
 	      bullet_dmg = 10.0,

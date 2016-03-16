@@ -48,6 +48,7 @@ Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _
 					(*shipIt)->life, images[(*shipIt)->name],
 					*colors[(*shipIt)->color],
 					(*shipIt)->hitboxes);
+    newEnemy->add_weapon(weapon_list[(*shipIt)->weapon_name]);
     future_enemies.push_back(newEnemy);
     delete(*shipIt);
   }
@@ -138,10 +139,7 @@ void Level::enemy_actions(std::vector<EnemyShip*> &enemies, std::vector<Bullet*>
   if(!enemies.empty())
     {
       for(std::vector<EnemyShip*>::iterator it = enemies.begin(); it != enemies.end();it++){
-	if((*it)->firing == true)
-	  {
-	    (*it)->fire(enemy_bullets, images["tri_bullet"]);
-	  }
+	(*it)->fire(enemy_bullets);
       }
     }
 }

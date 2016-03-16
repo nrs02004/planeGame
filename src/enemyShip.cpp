@@ -13,20 +13,27 @@ EnemyShip::EnemyShip(float init_x, float init_y, float _speed, float _cool_down_
   : PhysicalObject(init_x, init_y, init_enemy_image, _color, _hitboxes)
 {
   speed = _speed;
-  cool_down_length = _cool_down_length;
-  cool_down_timer = 0.0;
-  firing = false;
   life = _life;
   exploded = 0;
+}
 
+void EnemyShip::add_weapon(Weapon* weapon)
+{
+  Weapon new_weapon = *weapon;
+  new_weapon.bullet_init_speed_y *= -1;
+  new_weapon.bullet_accel_y *= -1;
+  new_weapon.angle = 180.0;
+  weapons.push_back(new_weapon);
 }
 
 void EnemyShip::update(float dt)
 {
   y += speed*dt;
 
-  cool_down_timer = fmax(cool_down_timer - dt, 0.0);
-  if(cool_down_timer <= 0.0){firing = true;}
+  for(auto weapon_it = weapons.begin(); weapon_it != weapons.end(); weapon_it++){
+    weapon_it->update(dt);
+  }
+    
   if(life <= 0.0){exploded = true;}
 }
 
@@ -35,14 +42,11 @@ bool EnemyShip::within_bounds(float max_y, float max_x)
   return (x > SCREEN_BUFFER) && (x < max_x - SCREEN_BUFFER) && (y > SCREEN_BUFFER) && (y < max_y - SCREEN_BUFFER);
 }
 
-void EnemyShip::fire(std::vector<Bullet*>& enemy_bullets, Image* bullet_image)
+void EnemyShip::fire(std::vector<Bullet*>& enemy_bullets)
 {
-  Bullet *myBullet = new Bullet(x, y, BULLETSPEEDX, -BULLETSPEEDY, 0, bullet_image, color);
-
-  myBullet->angle = 180; // flipping the bullet
-  enemy_bullets.push_back(myBullet);
-  cool_down_timer = cool_down_length;
-  firing = false;
+  for(auto weapon_it = weapons.begin(); weapon_it != weapons.end(); weapon_it++){
+    weapon_it->fire(enemy_bullets, x, y);
+  }
 }
 
 void EnemyShip::takeDmg(Bullet *bulletIt)

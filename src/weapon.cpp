@@ -27,6 +27,7 @@ Weapon::Weapon(int _alternate, float _portWidth, float _cool_down_length,
   bullet_image = _bullet_image;
   color = _color;
   hitboxes = _hitboxes;
+  angle = 0.0;
 }
 
 void Weapon::update(float dt)
@@ -38,6 +39,7 @@ void Weapon::fire(std::vector<Bullet*>& bullets, float x, float y)
 {
     if(cool_down_timer <= 0.0f){
       Bullet *myBullet = new Bullet(x + firePort*portWidth, y, bullet_init_speed_x, bullet_init_speed_y, bullet_accel_y, bullet_dmg, bullet_image, color, hitboxes);
+      myBullet->angle = angle;
       firePort *= alternate;
         bullets.push_back(myBullet);
         cool_down_timer = cool_down_length;
