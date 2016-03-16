@@ -36,14 +36,13 @@ public:
 class Intro : public Layer
 {
 public:
-  Intro(lua_State*, std::map<std::string, Image*>, Ship *, SDL_Renderer*);
+  Intro(lua_State*, Ship *, SDL_Renderer*);
     void update(float, std::vector<Action*> &, std::stack<Layer*> &);
     void display();
     void apply_actions(std::vector<Action*> &, std::stack<Layer*> &);
 
     bool start_level;
     lua_State *L;
-    std::map<std::string, Image*> images;
     Ship *myShip;
     int count;
 };

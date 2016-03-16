@@ -40,10 +40,9 @@ void pause::display(){}
 
 // Defining stuff for pause layer
 
-Intro::Intro(lua_State *_L, std::map<std::string, Image*> _images, Ship *_myShip, SDL_Renderer* _renderer) : Layer(_renderer)
+Intro::Intro(lua_State *_L, Ship *_myShip, SDL_Renderer* _renderer) : Layer(_renderer)
 {
     L = _L;
-    images = _images;
     myShip = _myShip;
     start_level = false;
     count = 0;
@@ -63,7 +62,7 @@ void Intro::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
 	L = luaL_newstate();
 	luaL_openlibs(L);
 
-        Level* Level1 = new Level(filename, L, images, myShip, renderer);
+        Level* Level1 = new Level(filename, L, myShip, renderer);
         layers.push(Level1);
 	start_level = false;
 	count++;

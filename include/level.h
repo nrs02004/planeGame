@@ -36,7 +36,7 @@
 class Level : public Layer
 {
 public:
-  Level(std::string, lua_State*, std::map<std::string, Image*>, Ship*, SDL_Renderer*) ;
+  Level(std::string, lua_State*, Ship*, SDL_Renderer*) ;
   ~Level();
 
   void update(float, std::vector<Action*> &, std::stack<Layer*> &layers);
@@ -53,7 +53,6 @@ public:
 
     float currComplete, speed;
     std::vector<EnemyShip*> future_enemies;
-    std::map<std::string, Image*> images;
 
     Ship *myShip;
     std::vector<Bullet*> bullets;

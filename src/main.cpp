@@ -33,6 +33,7 @@
 SDL_Window* gWindow = NULL;
 std::map<std::string, Color*> colors;
 std::map<std::string, Weapon*> weapon_list;
+std::map<std::string, Image*> images;
 
 int main( int argc, char* args[] )
 {
@@ -40,30 +41,29 @@ int main( int argc, char* args[] )
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
 
-  std::map<std::string, Image*> images;
   SDL_Renderer* renderer = NULL;
 
   init(renderer);
 
   //Reading in images from Lua
-  init_images(L, images, renderer);
+  init_images(L, renderer);
 
   // Reading in colors from Lua
   init_colors(L);
     
   // loading weapons from Lua
   
-  init_weapons(L, images);
+  init_weapons(L);
 
   // load ship from Lua and init
   
-  Ship *myShip = init_ship(L, images);
+  Ship *myShip = init_ship(L);
     
   std::vector<Action*> actions; // Creating action vector (should be stack)
 
   std::stack<Layer*> layers; // Creating the layer stack
 
-  Intro* intro = new Intro(L, images, myShip, renderer);
+  Intro* intro = new Intro(L, myShip, renderer);
 
   layers.push(intro); //Adding the intro layer
 
@@ -93,14 +93,14 @@ int main( int argc, char* args[] )
 	  
 	}
   
-  clean_up(images);
+  clean_up();
   delete myShip;
   
   return 0;
 }
 
 
-void init_images(lua_State *L, std::map<std::string, Image*>& images, SDL_Renderer* renderer)
+void init_images(lua_State *L, SDL_Renderer* renderer)
 {
   std::string init_filename = "init/init.lua";
   load_file(L, init_filename);
@@ -128,7 +128,7 @@ void init_colors(lua_State *L)
   }
 }
 
-void init_weapons(lua_State *L, std::map<std::string, Image*> images)
+void init_weapons(lua_State *L)
 {
   std::string weapon_filename = "objects/weapon_list.lua";
   load_file(L, weapon_filename);
@@ -151,7 +151,7 @@ void init_weapons(lua_State *L, std::map<std::string, Image*> images)
 }
 
 
-Ship* init_ship(lua_State *L,  std::map<std::string, Image*> images)
+Ship* init_ship(lua_State *L)
 {
   std::string myShip_filename = "objects/myShip.lua";
   load_file(L, myShip_filename);
@@ -176,7 +176,7 @@ Ship* init_ship(lua_State *L,  std::map<std::string, Image*> images)
 }
 
 
-void clean_up(std::map<std::string, Image*> &images)
+void clean_up()
 {
   // CLEAN UP IMAGES
     for(std::map<std::string, Image*>::iterator imageIt = images.begin(); imageIt != images.end(); imageIt++){

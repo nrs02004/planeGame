@@ -19,20 +19,13 @@
 #include"lua/lua.hpp"
 #include"ship.h"
 
-void init_images(lua_State *, std::map<std::string, Image*>&, SDL_Renderer*);
+void init_images(lua_State *, SDL_Renderer*);
 void init_colors(lua_State *);
-void init_weapons(lua_State *, std::map<std::string, Image*>);
-Ship* init_ship(lua_State *,  std::map<std::string, Image*>);
+void init_weapons(lua_State *);
+Ship* init_ship(lua_State *);
 
-void enemy_actions(std::vector<EnemyShip*> &, std::vector<Bullet*> &, Image*);
-void createEnemies(std::vector<EnemyShip*> &, Image*, lua_State*);
 float update_time(Uint32&, Uint32&);
-void update_ship(Ship *, float);
-void update_enemies(std::vector<EnemyShip*> &, float);
-void update_bullets(std::vector<Bullet*> &, float);
-void apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vector<Bullet*> &bullets, Image* bullet_image, float dt);
-void check_collisions(std::vector<Bullet*>&, std::vector<EnemyShip*>&);
-bool check_collide(Bullet*, EnemyShip*);
-void clean_up(std::map<std::string, Image*> &);
+
+void clean_up();
 
 #endif

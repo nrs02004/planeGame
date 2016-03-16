@@ -19,11 +19,10 @@
 
 bool cmp( const EnemyShip *s1, const EnemyShip *s2 ){return (s1)->y < (s2)->y;}
 
-Level::Level(std::string filename, lua_State *L, std::map<std::string, Image*> _images, Ship* _myShip, SDL_Renderer* _renderer) : Layer(_renderer)
+Level::Level(std::string filename, lua_State *L, Ship* _myShip, SDL_Renderer* _renderer) : Layer(_renderer)
 {
   currComplete = 0;
   speed = 100;
-  images = _images;
   renderer = _renderer;
 
   load_file(L, filename);
