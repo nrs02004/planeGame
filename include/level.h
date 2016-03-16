@@ -42,6 +42,7 @@ public:
   void update(float, std::vector<Action*> &, std::stack<Layer*> &layers);
   void update_enemies(std::vector<EnemyShip*> &, float);
   void update_ship(Ship*, float);
+  void load_enemies_from_file(lua_State *, std::vector<EnemyShip*> &);
   void load_new_enemies(std::vector<EnemyShip*> &);
   void update_bullets(std::vector<Bullet*> &, float);
   void enemy_actions(std::vector<EnemyShip*> &, std::vector<Bullet*> &);

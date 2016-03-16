@@ -26,35 +26,12 @@ Level::Level(std::string filename, lua_State *L, Ship* _myShip) : Layer()
 
   load_file(L, filename);
 
-
-
-
   myShip = _myShip;
-    myShip->x = 500; myShip->y = 680;
-
-
-
+  myShip->x = 500; myShip->y = 680;
 
   // Loading the enemy ships
-
-  std::string enemy_data = "enemy_stack";
-  std::vector<Ship_dat*> ship_dat = lua_get_ships(L, enemy_data);
-
-  for(auto shipIt = ship_dat.begin(); shipIt != ship_dat.end(); shipIt++){
-    EnemyShip *newEnemy = new EnemyShip((*shipIt)->x, (*shipIt)->y,
-					(*shipIt)->speed,(*shipIt)->cool_down_length,
-					(*shipIt)->life, images[(*shipIt)->name],
-					*colors[(*shipIt)->color],
-					(*shipIt)->hitboxes);
-    newEnemy->add_weapon(weapon_list[(*shipIt)->weapon_name]);
-    future_enemies.push_back(newEnemy);
-    delete(*shipIt);
-  }
-
-  // Sort the  ships by y-value
-
-  std::sort(future_enemies.begin(), future_enemies.end(),cmp);
-
+  load_enemies_from_file(L, future_enemies);
+  
   //clean up things
 }
 
@@ -94,6 +71,27 @@ void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
 void Level::display()
 {
   update_disp(images["background"], myShip, bullets, enemies, enemy_bullets);
+}
+
+void Level::load_enemies_from_file(lua_State *L, std::vector<EnemyShip*> &future_enemies)
+{
+  std::string enemy_data = "enemy_stack";
+  std::vector<Ship_dat*> ship_dat = lua_get_ships(L, enemy_data);
+
+  for(auto shipIt = ship_dat.begin(); shipIt != ship_dat.end(); shipIt++){
+    EnemyShip *newEnemy = new EnemyShip((*shipIt)->x, (*shipIt)->y,
+					(*shipIt)->speed,(*shipIt)->cool_down_length,
+					(*shipIt)->life, images[(*shipIt)->name],
+					*colors[(*shipIt)->color],
+					(*shipIt)->hitboxes);
+    newEnemy->add_weapon(weapon_list[(*shipIt)->weapon_name]);
+    future_enemies.push_back(newEnemy);
+    delete(*shipIt);
+  }
+
+  // Sort the  ships by y-value
+
+  std::sort(future_enemies.begin(), future_enemies.end(),cmp);
 }
 
 void Level::load_new_enemies(std::vector<EnemyShip*> &enemies)
