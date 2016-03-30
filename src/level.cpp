@@ -266,7 +266,7 @@ void Level::apply_actions(std::vector<Action*> &actions,Ship* myShip, std::vecto
                     break;
                 case CLICK:
                     (*it)->apply();
-		    pause* new_pause = new pause();
+		    pause_layer* new_pause = new pause_layer();
                     layers.push(new_pause);
             }
         }

@@ -13,14 +13,14 @@ Layer::Layer(){
 
 // Defining stuff for pause layer
 
-pause::pause() : Layer(){}
+pause_layer::pause_layer() : Layer(){}
 
-void pause::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &layers)
+void pause_layer::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &layers)
 {
     apply_actions(actions, layers);
 }
 
-void pause::apply_actions(std::vector<Action*> &actions, std::stack<Layer*> &layers)
+void pause_layer::apply_actions(std::vector<Action*> &actions, std::stack<Layer*> &layers)
 {
     if(!actions.empty())
     {
@@ -35,7 +35,7 @@ void pause::apply_actions(std::vector<Action*> &actions, std::stack<Layer*> &lay
     actions.clear();
 }
 
-void pause::display(){}
+void pause_layer::display(){}
 
 // Defining stuff for pause layer
 

@@ -25,10 +25,10 @@ public:
     bool terminate;
 };
 
-class pause : public Layer
+class pause_layer : public Layer
 {
 public:
-    pause();
+    pause_layer();
     void update(float, std::vector<Action*> &, std::stack<Layer*> &);
     void display();
     void apply_actions(std::vector<Action*> &, std::stack<Layer*> &);
