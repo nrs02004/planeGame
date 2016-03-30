@@ -15,11 +15,13 @@ Powerup::Powerup(Weapon* _weapon, float _y_vel, float _x, float _y, Image *_imag
   y_vel = _y_vel;
   weapon = _weapon;
 
-  //jostling weapon values a little bit
+  //jostling weapon values a little bit FIX THE FACT THAT THIS ARE POINTERS TO THE WEAPONS!!
+  //THIS IS MAKING THINGS ACT CUMULATIVELY!
 
   weapon->portWidth *= (50.0 + float(rand() % 50)) / 75.0;
   weapon->bullet_accel_y *= (50.0 + float(rand() % 50)) / 75.0;
   weapon->bullet_init_speed_y *= (50.0 + float(rand() % 50)) / 75.0;
+  weapon->bullet_init_speed_x *= (float(rand() % 200)) / 100.0;
   weapon->cool_down_length *= (50.0 + float(rand() % 50)) / 75.0;
 
 

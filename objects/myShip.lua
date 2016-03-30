@@ -14,8 +14,7 @@
 		    {x = 39-40, y = 9-50, r = 8}}}
 ]]--
 
-ship = {weapons = {"blue_minigun_L",
-		   "blue_minigun_R"},
+ship = {weapons = {"purple_minigun",},
 	color = "orange",
 	accel = 1600,
 	max_vel = 400,

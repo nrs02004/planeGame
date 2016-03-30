@@ -15,6 +15,11 @@ machine_gun={alternate = -1,
 	     portWidth = 25,
 	     fireport = 1,
 	     cool_down_length = 0.15}
+	     
+minigun={alternate = 2,
+	 portWidth = -10,
+	 fireport = 1,
+	 cool_down_length = 0.05}	
 
 minigun_L={alternate = 1,
 	     portWidth = -10,
@@ -27,20 +32,15 @@ minigun_R={alternate = 1,
 	     cool_down_length = 0.05}
 
 missile_launcher={alternate = -1,
-		 portWidth = 35.0,
+		 portWidth = 30.0,
 		 fireport = 1,
 		 cool_down_length = 0.3}
 
 
-wide_missile_launcher={alternate = -1,
-		      portWidth = 40.0,
+narrow_missile_launcher={alternate = -1,
+		      portWidth = 15.0,
 		      fireport = 1,
 		      cool_down_length = 0.4}
-
-double_wide_missile_launcher={alternate = -1,
-		             portWidth = 45.0,
-		             fireport = 1,
-		             cool_down_length = 0.5}
 
 baddie_gun={alternate = 1,
 	    portWidth = 0.0,
@@ -113,17 +113,17 @@ green_missile={bullet_init_speed_x = 15.0,
 	      bullet_color = "green",
 	      hitboxes = bullet_hitboxes}
 
-blue_missile={bullet_init_speed_x = 60.0,
-	      bullet_init_speed_y = slow_speed,
+blue_missile={bullet_init_speed_x = 150.0,
+	      bullet_init_speed_y = -slow_speed,
 	      bullet_accel_x = 0,
-	      bullet_accel_y = fast_accel,
+	      bullet_accel_y = fast_accel/2,
 	      bullet_dmg = 50.0,
 	      bullet_name="tri_bullet",
 	      bullet_color = "blue",
 	      hitboxes = bullet_hitboxes}
 
-orange_missile={bullet_init_speed_x = 30.0,
-	      bullet_init_speed_y = slow_speed,
+orange_missile={bullet_init_speed_x = 60.0,
+	      bullet_init_speed_y = slow_speed/2,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = fast_accel,
 	      bullet_dmg = 50.0,
@@ -131,6 +131,23 @@ orange_missile={bullet_init_speed_x = 30.0,
 	      bullet_color = "orange",
 	      hitboxes = bullet_hitboxes}
 
+blue_angle_pea={bullet_init_speed_x = fast_speed/2,
+                bullet_init_speed_y = fast_speed,
+                bullet_accel_x = 0,
+                bullet_accel_y = 0,
+                bullet_dmg = 2.0,
+                bullet_name="tiny_bullet",
+                bullet_color = "blue",
+	        hitboxes = pea_hitboxes}
+
+green_angle_pellet={bullet_init_speed_x = fast_speed/2,
+             bullet_init_speed_y = fast_speed,
+             bullet_accel_x = 0,
+             bullet_accel_y = 0,
+             bullet_dmg = 10.0,
+             bullet_name="circle_bullet",
+             bullet_color = "green",
+	     hitboxes = pellet_hitboxes}
 
 -- combining lists --
 function ListConcat(t1,t2)

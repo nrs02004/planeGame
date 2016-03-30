@@ -290,7 +290,7 @@ bool Level::check_collide(PhysicalObject *obj1, PhysicalObject *obj2)
 
 void Level::roll_powerup(std::vector<Powerup*> &powerups, EnemyShip* enemyship)
 {
-    if( rand() % 1000 > 950 ){
+    if( rand() % 1000 > 900 ){
         auto weapon_it = powerup_weapons.begin();
         std::advance(weapon_it, rand() % powerup_weapons.size());
         

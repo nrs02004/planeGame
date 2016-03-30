@@ -45,4 +45,5 @@ for k=1,20 do
     enemy_stack = ListConcat(enemy_stack, push_back(deepcopy(first_wave), k*(2550-900)))
 end
 
-powerup_weapons = {"purple_machine_gun", "green_missile_launcher", "blue_missile_launcher","orange_missile_launcher"}
+powerup_weapons = {"blue_machine_gun", "green_missile_launcher", "blue_missile_launcher","orange_missile_launcher", "blue_angle_minigun", "green_angle_machine_gun"}
+

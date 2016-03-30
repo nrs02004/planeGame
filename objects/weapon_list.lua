@@ -1,28 +1,33 @@
 dofile("objects/guns.lua")
 
-purple_machine_gun = Loadwith(machine_gun, blue_pellet)
-purple_machine_gun.gun_name = "purple_machine_gun"
+blue_machine_gun = Loadwith(machine_gun, blue_pellet)
+blue_machine_gun.gun_name = "blue_machine_gun"
 
-blue_minigun_L = Loadwith(minigun_L, purple_pea)
-blue_minigun_L.gun_name = "blue_minigun_L"
-
-blue_minigun_R = Loadwith(minigun_R, purple_pea)
-blue_minigun_R.gun_name = "blue_minigun_R"
+purple_minigun = Loadwith(minigun, purple_pea)
+purple_minigun.gun_name = "purple_minigun"
 
 green_missile_launcher = Loadwith(missile_launcher, green_missile)
 green_missile_launcher.gun_name = "green_missile_launcher"
 
-blue_missile_launcher = Loadwith(wide_missile_launcher, blue_missile)
+blue_missile_launcher = Loadwith(narrow_missile_launcher, blue_missile)
 blue_missile_launcher.gun_name = "blue_missile_launcher"
 
-orange_missile_launcher = Loadwith(double_wide_missile_launcher, orange_missile)
+orange_missile_launcher = Loadwith(missile_launcher, orange_missile)
 orange_missile_launcher.gun_name = "orange_missile_launcher"
 
-my_weapon_list = {purple_machine_gun,
-               blue_minigun_R, blue_minigun_L,
+blue_angle_minigun = Loadwith(minigun, blue_angle_pea)
+blue_angle_minigun.gun_name = "blue_angle_minigun"
+
+green_angle_machine_gun = Loadwith(machine_gun, green_angle_pellet)
+green_angle_machine_gun.gun_name = "green_angle_machine_gun"
+
+my_weapon_list = {blue_machine_gun,
+               purple_minigun,
 	       green_missile_launcher,
 	       blue_missile_launcher,
-	       orange_missile_launcher}
+	       orange_missile_launcher,
+	       blue_angle_minigun,
+	       green_angle_machine_gun}
 
 --[[ BADDIE GUNS --]]
 
