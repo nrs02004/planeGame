@@ -35,9 +35,11 @@ for u,v in pairs(enemy_images) do
     v.alpha = 240
 end
 
+powerup_images = {{name="powerup", path="image/powerup.png", height=34, width=32, alpha=240}}
+
 background_images = {{name="background",path="image/background.png",width=959,height=799, alpha = 255}}
 
-images = ListConcat(ListConcat(ListConcat(bullet_images, ship_images), enemy_images), background_images)
+images = ListConcat(ListConcat(ListConcat(ListConcat(bullet_images, ship_images), enemy_images), background_images), powerup_images)
 
 
 

@@ -26,10 +26,21 @@ minigun_R={alternate = 1,
 	     fireport = 1,
 	     cool_down_length = 0.05}
 
-missle_launcher={alternate = -1,
+missile_launcher={alternate = -1,
 		 portWidth = 35.0,
 		 fireport = 1,
 		 cool_down_length = 0.3}
+
+
+wide_missile_launcher={alternate = -1,
+		      portWidth = 40.0,
+		      fireport = 1,
+		      cool_down_length = 0.4}
+
+double_wide_missile_launcher={alternate = -1,
+		             portWidth = 45.0,
+		             fireport = 1,
+		             cool_down_length = 0.5}
 
 baddie_gun={alternate = 1,
 	    portWidth = 0.0,
@@ -93,13 +104,31 @@ purple_pea={bullet_init_speed_x = 0.0,
 	     hitboxes = pea_hitboxes}
 
 
-green_missile={bullet_init_speed_x = 0.0,
+green_missile={bullet_init_speed_x = 15.0,
 	      bullet_init_speed_y = slow_speed,
 	      bullet_accel_x = 0,
 	      bullet_accel_y = fast_accel,
 	      bullet_dmg = 50.0,
 	      bullet_name="tri_bullet",
 	      bullet_color = "green",
+	      hitboxes = bullet_hitboxes}
+
+blue_missile={bullet_init_speed_x = 60.0,
+	      bullet_init_speed_y = slow_speed,
+	      bullet_accel_x = 0,
+	      bullet_accel_y = fast_accel,
+	      bullet_dmg = 50.0,
+	      bullet_name="tri_bullet",
+	      bullet_color = "blue",
+	      hitboxes = bullet_hitboxes}
+
+orange_missile={bullet_init_speed_x = 30.0,
+	      bullet_init_speed_y = slow_speed,
+	      bullet_accel_x = 0,
+	      bullet_accel_y = fast_accel,
+	      bullet_dmg = 50.0,
+	      bullet_name="tri_bullet",
+	      bullet_color = "orange",
 	      hitboxes = bullet_hitboxes}
 
 

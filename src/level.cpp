@@ -29,7 +29,7 @@ Level::Level(std::string filename, lua_State *L, Ship* _myShip) : Layer()
   myShip = _myShip;
   myShip->x = 500; myShip->y = 680;
 
-  // Loading the enemy ships
+  // Loading the enemy ships (REALLY LOADING LEVEL)
   load_enemies_from_file(L, future_enemies);
   
   //clean up things
@@ -48,7 +48,10 @@ void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
   update_ship(myShip, dt);
 
   //Updating enemy ships
-  update_enemies(enemies, dt);
+  update_enemies(enemies, powerups, dt);
+    
+    //Updating powerups
+    update_powerups(powerups, dt);
 
   //"apply enemy actions"
   enemy_actions(enemies, enemy_bullets);
@@ -61,7 +64,7 @@ void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
   check_collisions(bullets, enemies);
 
   //Checking for enemy bullet --- myShip collisions
-  check_ship_collisions(myShip, enemy_bullets);
+  check_ship_collisions(myShip, enemy_bullets, powerups);
 
   apply_actions(actions, myShip, bullets, dt, layers);
 
@@ -70,7 +73,7 @@ void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
 
 void Level::display()
 {
-  update_disp(images["background"], myShip, bullets, enemies, enemy_bullets);
+  update_disp(images["background"], myShip, bullets, enemies, enemy_bullets, powerups);
 }
 
 void Level::load_enemies_from_file(lua_State *L, std::vector<EnemyShip*> &future_enemies)
@@ -87,11 +90,19 @@ void Level::load_enemies_from_file(lua_State *L, std::vector<EnemyShip*> &future
     newEnemy->add_weapon(weapon_list[(*shipIt)->weapon_name]);
     future_enemies.push_back(newEnemy);
     delete(*shipIt);
+      
   }
-
   // Sort the  ships by y-value
 
   std::sort(future_enemies.begin(), future_enemies.end(),cmp);
+
+    std::string powerup_weapon_data = "powerup_weapons";
+    std::vector<std::string> powerup_weapon_names = lua_get_string_vec(L, powerup_weapon_data);
+    
+    for(auto wIt = powerup_weapon_names.begin(); wIt != powerup_weapon_names.end(); wIt++){
+        powerup_weapons[*wIt] = weapon_list[*wIt];
+    }
+
 }
 
 void Level::load_new_enemies(std::vector<EnemyShip*> &enemies)
@@ -147,25 +158,53 @@ void Level::update_ship(Ship* myShip, float dt)
   myShip->enforce_bounds(SCREEN_HEIGHT, SCREEN_WIDTH);
 }
 
+void Level::update_powerups(std::vector<Powerup*> &powerups, float dt)
+{
+    if(!powerups.empty())
+    {
+        for(auto it = powerups.begin(); it != powerups.end();){
+            
+            (*it)->update(dt);
+            
+            if(((*it)->within_bounds(SCREEN_HEIGHT, SCREEN_WIDTH) == false) ||
+               ((*it)->used == true))
+            {
+                delete *it;
+                it = powerups.erase(it);
+            }
+            else{
+                it++;
+            }
+        }
+    }
+}
 
-void Level::update_enemies(std::vector<EnemyShip*> &enemies, float dt)
+void Level::update_enemies(std::vector<EnemyShip*> &enemies, std::vector<Powerup*> &powerups, float dt)
 {
     if(!enemies.empty())
     {
         for(std::vector<EnemyShip*>::iterator it = enemies.begin(); it != enemies.end();){
 	  (*it)->update(dt);
 
-	  if(((*it)->within_bounds(SCREEN_HEIGHT, SCREEN_WIDTH) == false) ||
-	     ((*it)->exploded == true))
-	    {
-	      delete *it;
-	      it = enemies.erase(it);
-	    }
-	  else
-	    {
-	      it++;
-	    }
-
+	  if(((*it)->within_bounds(SCREEN_HEIGHT, SCREEN_WIDTH) == false))
+      {
+          delete *it;
+          it = enemies.erase(it);
+      }
+      else
+        {
+          if((*it)->exploded == true)
+          {
+              roll_powerup(powerups, (*it));
+              delete *it;
+              it = enemies.erase(it);
+          }
+          else
+          {
+              it++;
+          }
+        }
+        
         }
     }
 }
@@ -188,7 +227,7 @@ void Level::check_collisions(std::vector<Bullet*> &bullets, std::vector<EnemyShi
 }
 
 
-void Level::check_ship_collisions(Ship *myShip, std::vector<Bullet*> &bullets)
+void Level::check_ship_collisions(Ship *myShip, std::vector<Bullet*> &bullets, std::vector<Powerup*> &powerups)
 {
   if(!bullets.empty()){
     for(std::vector<Bullet*>::iterator bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++){
@@ -199,6 +238,14 @@ void Level::check_ship_collisions(Ship *myShip, std::vector<Bullet*> &bullets)
       }
     }
   }
+    if(!powerups.empty()){
+        for(auto powerupIt = powerups.begin(); powerupIt != powerups.end(); powerupIt++){
+            if(check_collide(*powerupIt, myShip)){
+                myShip->add_weapon((*powerupIt)->weapon);
+                (*powerupIt)->used = true;
+            }
+        }
+    }
 }
 
 
@@ -239,6 +286,22 @@ bool Level::check_collide(PhysicalObject *obj1, PhysicalObject *obj2)
     }
   }
   return false;
+}
+
+void Level::roll_powerup(std::vector<Powerup*> &powerups, EnemyShip* enemyship)
+{
+    if( rand() % 1000 > 950 ){
+        auto weapon_it = powerup_weapons.begin();
+        std::advance(weapon_it, rand() % powerup_weapons.size());
+        
+        //This should maybe be elsewhere?
+        std::vector<Hitbox> hitboxes;
+        hitboxes.push_back(Hitbox(0,0,14));
+        
+        Powerup* new_powerup = new Powerup(weapon_it->second, 200.0 + rand() % 200, enemyship->x, enemyship->y,
+                                           images["powerup"], (weapon_it->second)->color, hitboxes );
+        powerups.push_back(new_powerup);
+    }
 }
 
 Level::~Level()

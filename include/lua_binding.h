@@ -20,6 +20,8 @@ std::vector<int> lua_get_int_vec(lua_State *, const std::string&);
 
 std::vector<std::string> lua_get_string_vec(lua_State *, const std::string&);
 
+std::vector<std::string> lua_get_string_vec_from_table(lua_State *, const std::string&);
+
 std::string lua_get_string_from_table(lua_State *, const std::string&);
 
 int lua_get_int_from_table(lua_State *, const std::string&);

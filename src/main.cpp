@@ -68,6 +68,7 @@ int main( int argc, char* args[] )
 
   srand(time(0));
 
+    
   SDL_Event event;
   Uint32 old_time, current_time;
   float dt;

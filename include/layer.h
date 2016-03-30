@@ -9,9 +9,11 @@
 #include <map>
 #include "image.h"
 #include "lua/lua.hpp"
-#include "image.h"
 #include "SDL2/SDL.h"
 #include "color.h"
+#include "ship.h"
+#include "lua_binding.h"
+#include "globals.h"
 
 class Layer
 {
@@ -39,6 +41,7 @@ public:
     void update(float, std::vector<Action*> &, std::stack<Layer*> &);
     void display();
     void apply_actions(std::vector<Action*> &, std::stack<Layer*> &);
+    Ship* init_ship(lua_State*);
 
     bool start_level;
     lua_State *L;

@@ -96,7 +96,7 @@ void apply_Ship(Ship *ship)
 
 
 
-bool update_disp(Image* background, Ship* myShip, std::vector<Bullet*> &bullets, std::vector<EnemyShip*> &enemies, std::vector<Bullet*> &enemy_bullets)
+bool update_disp(Image* background, Ship* myShip, std::vector<Bullet*> &bullets, std::vector<EnemyShip*> &enemies, std::vector<Bullet*> &enemy_bullets, std::vector<Powerup*> &powerups)
 {
   SDL_RenderClear(renderer);
     //Apply the background to screen
@@ -131,6 +131,13 @@ bool update_disp(Image* background, Ship* myShip, std::vector<Bullet*> &bullets,
         for(std::vector<EnemyShip*>::iterator it = enemies.begin(); it != enemies.end(); it++){
 	  //            apply_texture(it->x, it->y, it->enemy_image, screen);
 	  apply_enemyShip(*it);
+        }
+    }
+    
+    if(!powerups.empty())
+    {
+        for(auto it = powerups.begin(); it != powerups.end(); it++){
+            apply_PhysicalObject(*it);
         }
     }
 

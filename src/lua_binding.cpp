@@ -66,6 +66,21 @@ std::vector<int> lua_get_int_vec(lua_State *L, const std::string& key){
 }
 
 std::vector<std::string> lua_get_string_vec(lua_State *L, const std::string& key){
+    lua_getglobal(L,key.c_str());
+    std::vector<std::string> outp;
+    if(!lua_istable(L, -1)) {
+        luaL_error(L, "Not a table: %s", key.c_str());
+    }
+    lua_pushnil(L);
+    while(lua_next(L, -2)) {
+        outp.push_back(lua_tostring(L, -1));
+        lua_pop(L, 1);
+    }
+    lua_pop(L, 1);
+    return outp;
+}
+
+std::vector<std::string> lua_get_string_vec_from_table(lua_State *L, const std::string& key){
   lua_pushstring(L,key.c_str());
   lua_gettable(L,-2);
   std::vector<std::string> outp;
@@ -278,7 +293,7 @@ myShip_dat lua_get_myShip(lua_State *L, const std::string& key){
    outp.max_vel = lua_get_float_from_table(L, "max_vel");
    outp.life = lua_get_float_from_table(L, "life");
    outp.color_name = lua_get_string_from_table(L, "color");
-   outp.weapon_names = lua_get_string_vec(L, "weapons");
+   outp.weapon_names = lua_get_string_vec_from_table(L, "weapons");
 
    std::string hitbox_string = "hitboxes";
    outp.hitboxes = lua_get_hitboxes_from_table(L,hitbox_string);

@@ -32,6 +32,7 @@
 #include "layer.h"
 #include "color.h"
 #include "weapon.h"
+#include "powerup.h"
 
 class Level : public Layer
 {
@@ -40,15 +41,17 @@ public:
   ~Level();
 
   void update(float, std::vector<Action*> &, std::stack<Layer*> &layers);
-  void update_enemies(std::vector<EnemyShip*> &, float);
+  void update_enemies(std::vector<EnemyShip*> &, std::vector<Powerup*> &, float);
   void update_ship(Ship*, float);
+    void update_powerups(std::vector<Powerup*> &, float);
   void load_enemies_from_file(lua_State *, std::vector<EnemyShip*> &);
   void load_new_enemies(std::vector<EnemyShip*> &);
   void update_bullets(std::vector<Bullet*> &, float);
   void enemy_actions(std::vector<EnemyShip*> &, std::vector<Bullet*> &);
   void check_collisions(std::vector<Bullet*> &, std::vector<EnemyShip*> &);
-  void check_ship_collisions(Ship*, std::vector<Bullet*> &);
+    void check_ship_collisions(Ship*, std::vector<Bullet*> &, std::vector<Powerup*> &);
   bool check_collide(PhysicalObject*, PhysicalObject*);
+    void roll_powerup(std::vector<Powerup*> &, EnemyShip*);
   void apply_actions(std::vector<Action*> &,Ship*, std::vector<Bullet*> &, float, std::stack<Layer*> &);
   void display();
 
@@ -59,6 +62,8 @@ public:
     std::vector<Bullet*> bullets;
     std::vector<Bullet*> enemy_bullets;
     std::vector<EnemyShip*> enemies;
+    std::vector<Powerup*> powerups;
+    std::map<std::string, Weapon*> powerup_weapons;
 };
 
 #endif /* defined(__airplaneGame__level__) */
