@@ -10,7 +10,7 @@
 #define __airplaneGame__ship__
 
 #include "bullet.h"
-#include "SDL/SDL.h"
+#include "SDL2/SDL.h"
 #include <vector>
 #include <string>
 #include "image.h"
@@ -23,7 +23,7 @@ public:
   Ship(float, float, std::vector<Image*> *, Color, float, float, float, std::vector<Hitbox>);
   ~Ship();
 
-  void add_weapon(Weapon*);
+  void add_weapon(Weapon);
 
     void update(float dt);
     void x_thrust(float power);

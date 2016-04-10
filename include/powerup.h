@@ -28,7 +28,7 @@ public:
   bool used;
   float y_vel;
   std::vector<Hitbox> hitboxes;
-  Weapon* weapon;
+  Weapon weapon;
 };
 
 #endif

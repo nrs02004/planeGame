@@ -25,9 +25,9 @@ Ship::Ship(float init_x, float init_y, std::vector<Image*> *ship_images, Color _
   exploded = 0;
 }
 
-void Ship::add_weapon(Weapon* weapon)
+void Ship::add_weapon(Weapon weapon)
 {
-  weapons.push_back(*weapon);
+  weapons.push_back(weapon);
 }
 
 void Ship::update(float dt)
@@ -42,7 +42,7 @@ void Ship::update(float dt)
     if(active_thrust_y == false){
         passive_break_y(dt * accel/2);
     }
-    
+
     active_thrust_x = false;
     active_thrust_y = false;
 

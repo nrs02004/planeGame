@@ -2,7 +2,8 @@ CC=g++
 #FLAGS=-lSDL2 -lSDL2_image
 FLAGS = -framework SDL2 -framework SDL2_image -std=c++11
 #-lSDL_image
-PROJECTROOT=/Users/noahsimon/Dropbox/planeGame/SDL2_version
+PROJECTROOT=.
+#PROJECTROOT=/Users/noahsimon/Dropbox/planeGame/SDL2_version
 #PROJECTROOT=/home/nsimon/Desktop/planeGame/sdl2_version
 INC=-I$(PROJECTROOT)/include 
 LIB=-L$(PROJECTROOT)/lib

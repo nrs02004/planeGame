@@ -31,7 +31,7 @@ Level::Level(std::string filename, lua_State *L, Ship* _myShip) : Layer()
 
   // Loading the enemy ships (REALLY LOADING LEVEL)
   load_enemies_from_file(L, future_enemies);
-  
+
   //clean up things
 }
 
@@ -49,7 +49,7 @@ void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
 
   //Updating enemy ships
   update_enemies(enemies, powerups, dt);
-    
+
     //Updating powerups
     update_powerups(powerups, dt);
 
@@ -90,7 +90,7 @@ void Level::load_enemies_from_file(lua_State *L, std::vector<EnemyShip*> &future
     newEnemy->add_weapon(weapon_list[(*shipIt)->weapon_name]);
     future_enemies.push_back(newEnemy);
     delete(*shipIt);
-      
+
   }
   // Sort the  ships by y-value
 
@@ -98,7 +98,7 @@ void Level::load_enemies_from_file(lua_State *L, std::vector<EnemyShip*> &future
 
     std::string powerup_weapon_data = "powerup_weapons";
     std::vector<std::string> powerup_weapon_names = lua_get_string_vec(L, powerup_weapon_data);
-    
+
     for(auto wIt = powerup_weapon_names.begin(); wIt != powerup_weapon_names.end(); wIt++){
         powerup_weapons[*wIt] = weapon_list[*wIt];
     }
@@ -163,9 +163,9 @@ void Level::update_powerups(std::vector<Powerup*> &powerups, float dt)
     if(!powerups.empty())
     {
         for(auto it = powerups.begin(); it != powerups.end();){
-            
+
             (*it)->update(dt);
-            
+
             if(((*it)->within_bounds(SCREEN_HEIGHT, SCREEN_WIDTH) == false) ||
                ((*it)->used == true))
             {
@@ -204,7 +204,7 @@ void Level::update_enemies(std::vector<EnemyShip*> &enemies, std::vector<Powerup
               it++;
           }
         }
-        
+
         }
     }
 }
@@ -294,14 +294,14 @@ void Level::roll_powerup(std::vector<Powerup*> &powerups, EnemyShip* enemyship)
     if( rand() % 1000 > 900 ){
         auto weapon_it = powerup_weapons.begin();
         std::advance(weapon_it, rand() % powerup_weapons.size());
-        
+
         //This should maybe be elsewhere?
         std::vector<Hitbox> hitboxes;
         hitboxes.push_back(Hitbox(0,0,14));
-        
-        Powerup* new_powerup = new Powerup(weapon_it->second, 200.0 + rand() % 200, enemyship->x, enemyship->y,
+
+	        Powerup* new_powerup = new Powerup((weapon_it->second), 200.0 + rand() % 200, enemyship->x, enemyship->y,
                                            images["powerup"], (weapon_it->second)->color, hitboxes );
-        powerups.push_back(new_powerup);
+					   powerups.push_back(new_powerup);
     }
 }
 

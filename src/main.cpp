@@ -42,22 +42,22 @@ int main( int argc, char* args[] )
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
 
-  init_SDL(); 
+  init_SDL();
 
   //Reading in images from Lua
   init_images(L);
 
   // Reading in colors from Lua
   init_colors(L);
-    
+
   // loading weapons from Lua
-  
+
   init_weapons(L);
 
   // load ship from Lua and init
-  
+
   Ship *myShip = init_ship(L);
-    
+
   std::vector<Action*> actions; // Creating action vector (should be stack)
 
   std::stack<Layer*> layers; // Creating the layer stack
@@ -68,7 +68,7 @@ int main( int argc, char* args[] )
 
   srand(time(0));
 
-    
+
   SDL_Event event;
   Uint32 old_time, current_time;
   float dt;
@@ -79,23 +79,23 @@ int main( int argc, char* args[] )
 	{
     //Finding how much time has passed
 	  dt = update_time(old_time, current_time);
-	  
+
 	  //Checking for key presses
 	  handle_event(event, quit, actions);
-	  
+
 	  (layers.top())->update(dt,actions,layers);
 	  (layers.top())->display();
-	  
+
 	  //Removing Layers that have ended
 	  while(layers.top()->terminate == true){
             layers.pop();
 	  }
-	  
+
 	}
-  
+
   clean_up();
   delete myShip;
-  
+
   return 0;
 }
 
@@ -122,7 +122,7 @@ void init_colors(lua_State *L)
   load_file(L, colors_filename);
   std::string color_data = "colors";
   std::vector<Color_dat*> color_dat = lua_get_colors(L, color_data);
-  
+
   for(auto colorIt = color_dat.begin(); colorIt != color_dat.end(); colorIt++){
     colors[(*colorIt)->name] = new Color((*colorIt)->r, (*colorIt)->g, (*colorIt)->b);
   }
@@ -134,9 +134,9 @@ void init_weapons(lua_State *L)
   load_file(L, weapon_filename);
   std::string weapon_data = "weapon_list";
   std::vector<Weapon_dat*> weapon_dat = lua_get_weapons(L, weapon_data);
-  
+
   //Weapon list is global
-  
+
   for(auto wIt = weapon_dat.begin(); wIt != weapon_dat.end(); wIt++){
     Weapon *newWeapon = new Weapon((*wIt)->alternate, (*wIt)->portWidth,
 				   (*wIt)->cool_down_length, (*wIt)->bullet_accel_x,
@@ -145,7 +145,7 @@ void init_weapons(lua_State *L)
 				   images[(*wIt)->bullet_name],
 				   *colors[(*wIt)->bullet_color],
 				   (*wIt)->hitboxes);
-    
+
     weapon_list[(*wIt)->gun_name] = newWeapon;
   }
 }
@@ -156,22 +156,22 @@ Ship* init_ship(lua_State *L)
   std::string myShip_filename = "objects/myShip.lua";
   load_file(L, myShip_filename);
   myShip_dat myShip_data = lua_get_myShip(L,"ship");
-   
+
   std::vector<Image*> *ship_images = new std::vector<Image*>;
   ship_images->push_back(images["ship_image"]);
   ship_images->push_back(images["ship_imageL"]);
   ship_images->push_back(images["ship_imageR"]);
   ship_images->push_back(images["ship_imageLL"]);
   ship_images->push_back(images["ship_imageRR"]);
-  
+
   Ship *myShip = new Ship(240, 190, ship_images, *colors[myShip_data.color_name], myShip_data.accel, myShip_data.max_vel, myShip_data.life, myShip_data.hitboxes);
-  
+
   // Adding Weapons to Ship
-  
+
   for(auto it = (myShip_data.weapon_names).begin(); it != (myShip_data.weapon_names).end(); it++){
-    myShip->add_weapon(weapon_list[*it]);
+    myShip->add_weapon(*weapon_list[*it]);
   }
-  
+
   return myShip;
 }
 
