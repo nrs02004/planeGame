@@ -51,7 +51,6 @@ void EnemyShip::fire(std::vector<Bullet*>& enemy_bullets)
 
 void EnemyShip::takeDmg(Bullet *bulletIt)
 {
-  //  std::cout << "bullet dmg: " << bulletIt->damage << "life: " << life << "\n";
   life = life - bulletIt->damage;
 }
 

@@ -73,6 +73,11 @@ void apply_PhysicalObject(PhysicalObject *obj, int index = 0)
   apply_texture(obj->x - (*(obj->my_images))[index]->width/2, obj->y - (*(obj->my_images))[index]->height/2,  (*(obj->my_images))[index]->width,  (*(obj->my_images))[index]->height, (*(obj->my_images))[index]->image, obj->angle, obj->color);
 }
 
+void apply_visible_equipment(Visible_equipment *obj)
+{
+  apply_texture(*(obj->x_ptr) - (obj->my_image)->width/2, *(obj->y_ptr) - (obj->my_image)->height/2,  (obj->my_image)->width,  (obj->my_image)->height, (obj->my_image)->image, obj->angle, obj->color);
+}
+
 void apply_enemyShip(EnemyShip *ship)
 {
   apply_PhysicalObject(ship);
@@ -91,6 +96,8 @@ void apply_Ship(Ship *ship)
   if(ship->banking == -2) apply_PhysicalObject((PhysicalObject *)ship, 3);
   if(ship->banking == 1) apply_PhysicalObject((PhysicalObject *)ship, 2);
   if(ship->banking == 2) apply_PhysicalObject((PhysicalObject *)ship, 4);
+
+  if((ship->shield).active) apply_visible_equipment((Visible_equipment*)&(ship->shield));
 
 }
 

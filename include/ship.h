@@ -17,6 +17,8 @@
 #include "physicalObject.h"
 #include "weapon.h"
 #include "color.h"
+#include "visible_equipment.h"
+//#include "enemyShip.h"
 
 class Ship : public PhysicalObject{
 public:
@@ -33,11 +35,14 @@ public:
     void fire(std::vector<Bullet*>& bullets);
     void enforce_bounds(float, float);
     void takeDmg(Bullet*);
+    void add_shield(Shield);
+    void use_shield();
 
     float x_vel,y_vel,max_vel,accel, life;
     bool active_thrust_x, active_thrust_y, exploded;
     int banking;
 
+    Shield shield;
     std::vector<Weapon> weapons;
 };
 

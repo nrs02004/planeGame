@@ -23,12 +23,14 @@
 #include "physicalObject.h"
 #include "color.h"
 #include "powerup.h"
+#include "visible_equipment.h"
 
 void apply_texture( int, int, int, int, SDL_Texture*, double, Color );
 SDL_Texture* load_texture( std::string);
 bool init_SDL();
 bool update_disp(Image*, Ship*, std::vector<Bullet*>&, std::vector<EnemyShip*>&, std::vector<Bullet*>&, std::vector<Powerup*> &);
 void apply_PhysicalObject(PhysicalObject*, int);
+void apply_visible_equipment(Visible_equipment*);
 void apply_Ship(Ship*);
 void apply_enemyShip(EnemyShip*);
 void apply_Bullet(Bullet*);

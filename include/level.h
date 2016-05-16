@@ -49,7 +49,8 @@ public:
   void update_bullets(std::vector<Bullet*> &, float);
   void enemy_actions(std::vector<EnemyShip*> &, std::vector<Bullet*> &);
   void check_collisions(std::vector<Bullet*> &, std::vector<EnemyShip*> &);
-    void check_ship_collisions(Ship*, std::vector<Bullet*> &, std::vector<Powerup*> &);
+  void check_ship_collisions(Ship*, std::vector<Bullet*> &, std::vector<Powerup*> &);
+  void check_ship_ship_collisions(Ship*, std::vector<EnemyShip*> &);
   bool check_collide(PhysicalObject*, PhysicalObject*);
     void roll_powerup(std::vector<Powerup*> &, EnemyShip*);
   void apply_actions(std::vector<Action*> &,Ship*, std::vector<Bullet*> &, float, std::stack<Layer*> &);

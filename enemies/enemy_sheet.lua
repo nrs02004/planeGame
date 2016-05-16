@@ -7,21 +7,36 @@ tri_hitboxes = {{x = 10-40, y = 4-20, r = 5},
 		 {x = 68-40, y = 4-20, r = 5},
 		 {x = 39-40, y = 26-20, r = 10}}
 
+circ_hitboxes = {{x = 40-40, y= 40-40, r=40}}
+
+
+star_hitboxes = {{x = 26-25.5, y=26-24, r=12},
+	         {x = 26-25.5, y = 13-24, r = 4},
+		 {x = 37-25.5, y = 22-24, r = 4},
+		 {x = 14-25.5, y = 22-24, r = 4},
+		 {x = 18-25.5, y = 37-24, r = 4},
+		 {x = 34-25.5, y = 38-24, r = 4},
+		 {x = 26-25.5, y = 6-24, r = 2.5},
+		 {x = 45-25.5, y = 20-24, r = 2.5},
+		 {x = 37-25.5, y = 43-24, r = 2.5},
+		 {x = 14-25.5, y = 43-24, r = 2.5},
+		 {x = 7-25.5, y = 20-24, r = 2.5}}
+
 
 green_baddie={speed = 200,
               life = 50,
               cool_down_length = 50,
-              name = "tri_enemy",
+              name = "star_enemy",
 	      color = "green",
-	      hitboxes = tri_hitboxes,
+	      hitboxes = star_hitboxes,
 	      weapon = "baddie_green_gun"}
 
 blue_baddie={speed = 200,
              life = 100,
              cool_down_length = 50,
-             name = "tri_enemy",
+             name = "circ_enemy",
 	     color = "blue",
-	     hitboxes = tri_hitboxes,
+	     hitboxes = circ_hitboxes,
 	     weapon = "baddie_blue_gun"}
 
 purple_baddie={speed = 200,

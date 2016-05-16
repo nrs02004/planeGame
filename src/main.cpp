@@ -29,6 +29,8 @@
 #include <stack>
 #include "layer.h"
 #include "weapon.h"
+#include "visible_equipment.h"
+#include <iostream>
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* renderer = NULL;
@@ -171,6 +173,11 @@ Ship* init_ship(lua_State *L)
   for(auto it = (myShip_data.weapon_names).begin(); it != (myShip_data.weapon_names).end(); it++){
     myShip->add_weapon(*weapon_list[*it]);
   }
+
+  // Adding Shield to ship
+  Shield* my_shield = new Shield(&myShip->x, &myShip->y, images["shield"], *colors["blue"]);
+  myShip->add_shield(*my_shield);
+
 
   return myShip;
 }

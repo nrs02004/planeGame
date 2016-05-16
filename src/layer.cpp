@@ -3,6 +3,7 @@
 
 #include "layer.h"
 #include "level.h"
+#include <iostream>
 
 Layer::Layer(){
     terminate = false;
@@ -62,6 +63,7 @@ void Intro::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
 	luaL_openlibs(L);
 
 	Ship* myShip = init_ship(L); //Perhaps we should delete this, since we keep reinstantiating?
+ 
         Level* Level1 = new Level(filename, L, myShip);
         layers.push(Level1);
 	start_level = false;
@@ -106,6 +108,11 @@ Ship* Intro::init_ship(lua_State *L)
   for(auto it = (myShip_data.weapon_names).begin(); it != (myShip_data.weapon_names).end(); it++){
     myShip->add_weapon(*weapon_list[*it]);
   }
+    
+    // Adding Shield to ship
+    Shield* my_shield = new Shield(&myShip->x, &myShip->y, images["shield"], *colors["blue"]);
+    myShip->add_shield(*my_shield);
+
 
   return myShip;
 }

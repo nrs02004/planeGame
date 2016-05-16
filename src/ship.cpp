@@ -30,6 +30,11 @@ void Ship::add_weapon(Weapon weapon)
   weapons.push_back(weapon);
 }
 
+void Ship::add_shield(Shield _shield)
+{
+    shield = _shield;
+}
+
 void Ship::update(float dt)
 {
     x = x + x_vel * dt;
@@ -50,7 +55,11 @@ void Ship::update(float dt)
     weapon_it->update(dt);
   }
 
-    if(life <= 0.0){exploded = true;}
+  if(shield.length != -1.0){
+      shield.update(dt);
+  }
+
+  if(life <= 0.0){exploded = true;}
 
 }
 
@@ -98,6 +107,10 @@ void Ship::fire(std::vector<Bullet*>& bullets)
   for(auto weapon_it = weapons.begin(); weapon_it != weapons.end(); weapon_it++){
     weapon_it->fire(bullets, x, y);
   }
+}
+
+void Ship::use_shield(){
+    shield.activate();
 }
 
 void Ship::takeDmg(Bullet *bulletIt)

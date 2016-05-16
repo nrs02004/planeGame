@@ -15,6 +15,7 @@
 #include "lua/lua.hpp"
 #include "defs.h"
 #include "globals.h"
+#include <iostream>
 
 
 bool cmp( const EnemyShip *s1, const EnemyShip *s2 ){return (s1)->y < (s2)->y;}
@@ -28,7 +29,7 @@ Level::Level(std::string filename, lua_State *L, Ship* _myShip) : Layer()
 
   myShip = _myShip;
   myShip->x = 500; myShip->y = 680;
-
+    
   // Loading the enemy ships (REALLY LOADING LEVEL)
   load_enemies_from_file(L, future_enemies);
 
@@ -51,7 +52,7 @@ void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
   update_enemies(enemies, powerups, dt);
 
     //Updating powerups
-    update_powerups(powerups, dt);
+  update_powerups(powerups, dt);
 
   //"apply enemy actions"
   enemy_actions(enemies, enemy_bullets);
@@ -66,6 +67,9 @@ void Level::update(float dt, std::vector<Action*> &actions, std::stack<Layer*> &
   //Checking for enemy bullet --- myShip collisions
   check_ship_collisions(myShip, enemy_bullets, powerups);
 
+  //Check for enemy ship --- myShip collisions
+  check_ship_ship_collisions(myShip, enemies);
+  
   apply_actions(actions, myShip, bullets, dt, layers);
 
     if(myShip->exploded == true) {terminate = true;}
@@ -227,6 +231,21 @@ void Level::check_collisions(std::vector<Bullet*> &bullets, std::vector<EnemyShi
 }
 
 
+void Level::check_ship_ship_collisions(Ship *myShip, std::vector<EnemyShip*> &ships)
+{
+  if(!ships.empty()){
+    for(auto shipIt = ships.begin(); shipIt != ships.end(); shipIt++){
+      if(check_collide(*shipIt, myShip)){
+	(*shipIt)->life = 0;
+	myShip->life -= 30;
+	myShip->use_shield();
+	break;
+      }
+    }
+  }
+}
+
+
 void Level::check_ship_collisions(Ship *myShip, std::vector<Bullet*> &bullets, std::vector<Powerup*> &powerups)
 {
   if(!bullets.empty()){
@@ -234,6 +253,7 @@ void Level::check_ship_collisions(Ship *myShip, std::vector<Bullet*> &bullets, s
       if(check_collide(*bulletIt, myShip)){
 	    myShip->takeDmg(*bulletIt);
 	    (*bulletIt)->explode();
+        myShip->use_shield();
 	break;
       }
     }
